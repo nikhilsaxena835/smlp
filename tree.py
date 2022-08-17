@@ -68,18 +68,16 @@ class Tree:
         elif data > node.data:
             node.right = self.deleteNode(node.right, data)
         else: # reach to the node that need to delete from BST.
-            if node.left is None and node.right is None:
-                del node
             if node.left is None:
-                temp = node.right
-                del node
-                return temp
-            elif node.right is None:
-                temp = node.left
-                del node
-                return temp
+                    return node.left
+            if node.right is None:
+                return node.right
 
-        return node
+                temp = node.right
+                mini_data=temp.data
+                node.right=deleteNode(node.right,node.data)
+                return Node
+
 
     def traverseInorder(self, root):
         """
