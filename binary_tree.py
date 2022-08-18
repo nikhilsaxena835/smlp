@@ -17,7 +17,16 @@ class Ui_MainWindow(object):
     first = 0
     node_map = {}
     nodes = []
+    line_map = {}
     def setupUi(self, MainWindow):
+        '''
+        Nodes are drawn on the QGraphicsScene which is contained in the QGraphicsView container.
+        The window associated with this view is central widget that is the main window of the program.
+        Retranslate is used to rename the GUI elements currently. It will be removed later.
+        setSceneRect is not used and should be left commented for future.
+        '''
+
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1240, 900)
 
@@ -25,8 +34,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
 
         self.scene = QGraphicsScene()
-        self.scene.addText("Hellow")
-      #  self.scene.setSceneRect(40,60,851,561)
+      # self.scene.setSceneRect(40,60,851,561)
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(40, 60, 851, 561))
         self.graphicsView.setObjectName("graphicsView")
@@ -157,6 +165,8 @@ class Ui_MainWindow(object):
 
 
     def insert_clicked(self):
+
+
         inp = self.ins_tf.toPlainText()
 
         print(inp)
@@ -170,20 +180,22 @@ class Ui_MainWindow(object):
             realtree = tree.Tree()
             root = realtree.createNode(inp)
             self.sketch()
-            point = self.scene.addEllipse(2,2,10,10, QtGui.QPen(QtCore.Qt.blue), QtGui.QBrush(QtCore.Qt.green))
-            point.setPos(2,70)
+
         else:
             realtree.insert(root, inp)
             self.sketch()
 
     def del_clicked(self):
         inp = self.del_tf.toPlainText()
+        self.del_tf.setPlainText("")
         label = self.node_map[inp]
         label.deleteLater()
         realtree.deleteNode(root, inp)
         print("nodes before ", self.nodes)
         self.nodes.remove(inp)
         print("nodes after ", self.nodes)
+        line = self.line_map[inp]
+        self.scene.removeItem(line)
         self.sketch()
 
     def sketch(self):
@@ -202,14 +214,14 @@ class Ui_MainWindow(object):
                 x = parentlabel.x()
                 y = parentlabel.y()
                 print(x,y, parent)
+                point = self.scene.addWidget(label)
+                self.node_map[key] = point
                 if(parent > key):
-                    point = self.scene.addWidget(label)
-                    self.node_map[key] = point
                     point.setPos(x - 20, y + 30)
                 else:
-                    point = self.scene.addWidget(label)
-                    self.node_map[key] = point
                     point.setPos(x + 20, y + 30)
+                self.addLinetoNodes(x,y,point,key)
+
 
     def getParent(self, target):
         parent, node = None, root
@@ -223,6 +235,14 @@ class Ui_MainWindow(object):
             if target < node.data:
                 parent, node = node, node.left
             else:
-                parent,node = node, node.right
+                parent, node = node, node.right
+
+
+    def addLinetoNodes(self,x1, y1, point, key):
+        x2 = point.x()
+        y2 = point.y()
+        line = QtWidgets.QGraphicsLineItem(x1, y1, x2, y2)
+        self.line_map[key] = line
+        self.scene.addItem(line)
 
 
