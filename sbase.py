@@ -8,9 +8,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QPropertyAnimation, QParallelAnimationGroup, QPoint
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+import bubble_sort
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -39,6 +40,9 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
+        self.label_1 = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.label_1.setObjectName("label_1")
+        self.horizontalLayout.addWidget(self.label_1)
         self.label_6 = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout.addWidget(self.label_6)
@@ -95,10 +99,28 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+
         self.pushButton.clicked.connect(self.onbtnclick)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+        self.values = [self.label.text(), self.label_1.text(), self.label_2.text(), self.label_3.text(),
+                    self.label_4.text(), self.label_5.text(), self.label_6.text(),
+                    self.label_7.text(), self.label_8.text()]
+
+        self.arr = {self.label.text(): self.label, self.label_1.text(): self.label_1, self.label_2.text(): self.label_2,
+                    self.label_3.text(): self.label_3, self.label_4.text(): self.label_4,
+                    self.label_5.text(): self.label_5,
+                    self.label_6.text(): self.label_6, self.label_7.text(): self.label_7,
+                    self.label_8.text(): self.label_8}
+
+
+        print(self.arr)
+
+        bubble_sort.bubble.bubbleSort(self, self.values)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -110,6 +132,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "7"))
         self.label_6.setText(_translate("MainWindow", "6"))
         self.label_7.setText(_translate("MainWindow", "8"))
+        self.label_1.setText(_translate("MainWindow", "9"))
         self.label_8.setText(_translate("MainWindow", "5"))
         self.pushButton.setText(_translate("MainWindow", "Next"))
         self.pushButton_2.setText(_translate("MainWindow", "Home"))
@@ -126,7 +149,7 @@ class Ui_MainWindow(object):
 
 
 
-    def onbtnclick(self):
+    def onbtnclick(self, larger, smaller):
 
         # x1 = self.label_6.x()
         # y1 = self.label_6.y()
@@ -141,15 +164,18 @@ class Ui_MainWindow(object):
         # self.doanim(point2, point3)
 
 
-        start_pos = self.label_6.pos()
+        label_small = self.arr[smaller]
+        label_larger = self.arr[larger]
 
-        end_pos = self.label_3.pos()
+        start_pos = label_small.pos()
+
+        end_pos = label_larger.pos()
         animation_group = QParallelAnimationGroup(self)
 
         animation = QPropertyAnimation(
             self,
             propertyName=b"pos",
-            targetObject=self.label_6,
+            targetObject=label_larger,
             startValue=start_pos,
             endValue=end_pos,
             duration=8000,
@@ -158,7 +184,7 @@ class Ui_MainWindow(object):
         animation2 = QPropertyAnimation(
             self,
             propertyName=b"pos",
-            targetObject=self.label_3,
+            targetObject=label_small,
             startValue=end_pos,
             endValue=start_pos,
             duration=8000,
@@ -191,3 +217,4 @@ class Ui_MainWindow(object):
     #     animation_group.addAnimation(animation)
     #     animation_group.addAnimation(animation2)
     #     animation_group.start(QParallelAnimationGroup.DeleteWhenStopped)
+

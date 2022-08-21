@@ -17,6 +17,8 @@ import sys
  #   def initUI(self):
   #      screen_resolution = app.desktop().screenGeometry()
    #     width, height = screen_resolution.width(), screen_resolution.height()
+import sbase
+
 
 class ExampleApp(QtWidgets.QMainWindow, binary_tree.Ui_MainWindow):
     def __init__(self, parent=None):

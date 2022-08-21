@@ -1,40 +1,31 @@
 class Node:
-    """
-    Class Node
-    """
     def __init__(self, value):
         self.left = None
         self.data = value
         self.right = None
 
 class Tree:
-    """
-    Class tree will provide a tree as well as utility functions.
-    """
-    left = -1
     parent = None
+
     def createNode(self, data):
-        """
-        Utility function to create a node.
-        """
         return Node(data)
 
-    def insert(self, node , data):
-        """
-        Insert function will insert a node into tree.
-        Duplicate keys are not allowed.
-        """
-        #if tree is empty , return a root node
+    def insert(self, root , data):
+        node = root
         if node is None:
             return self.createNode(data)
+
         # if data is smaller than parent , insert it into left side
-        if data < node.data:
-            node.left = self.insert(node.left, data)
-        elif data > node.data:
-            node.right = self.insert(node.right, data)
-
+        else:
+            if data == node.data:
+                return node
+            elif data < node.data:
+                print("go left")
+                node.left = self.insert(node.left, data)
+            else:
+                print("go right")
+                node.right = self.insert(node.right, data)
         return node
-
 
     def search(self, node, data):
         """
@@ -51,96 +42,112 @@ class Tree:
 
 
 
-    def deleteNode(self,node,data):
-        """
-        Delete function will delete a node into tree.
-        Not complete , may need some more scenarion that we can handle
-        Now it is handling only leaf.
-        """
 
-        # Check if tree is empty.
-        if node is None:
-            return None
+    def deleteNode(root, data):
 
-        # searching key into BST.
-        if data < node.data:
-            node.left = self.deleteNode(node.left, data)
-        elif data > node.data:
-            node.right = self.deleteNode(node.right, data)
-        else: # reach to the node that need to delete from BST.
-            if node.left is None:
-                    return node.left
-            if node.right is None:
-                return node.right
+        # Base Case
+        if root is None:
+            return root
 
-                temp = node.right
-                mini_data=temp.data
-                node.right=deleteNode(node.right,node.data)
-                return Node
+        # If the key to be deleted
+        # is smaller than the root's
+        # key then it lies in  left subtree
+        if data < root.data:
+            root.left = Tree.deleteNode(root.left, data)
 
+        # If the kye to be delete
+        # is greater than the root's key
+        # then it lies in right subtree
+        elif (data > root.data):
+            root.right = Tree.deleteNode(root.right, data)
+
+        # If key is same as root's key, then this is the node
+        # to be deleted
+        else:
+
+            # Node with only one child or no child
+            if root.left is None:
+                temp = root.right
+                root = None
+                return temp
+
+            elif root.right is None:
+                temp = root.left
+                root = None
+                return temp
+
+            # Node with two children:
+            # Get the inorder successor
+            # (smallest in the right subtree)
+            temp = Tree.minValueNode(root.right)
+
+            # Copy the inorder successor's
+            # content to this node
+            root.key = temp.data
+
+            # Delete the inorder successor
+            root.right = Tree.deleteNode(root.right, temp.data)
+
+        return root
+
+    def minValueNode(node):
+        current = node
+        # loop down to find the leftmost leaf
+        while (current.left is not None):
+            current = current.left
+
+        return current
 
     def traverseInorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
         if root is not None:
             self.traverseInorder(root.left)
             print(root.data)
             self.traverseInorder(root.right)
 
     def traversePreorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
         if root is not None:
             print(root.data)
             self.traversePreorder(root.left)
             self.traversePreorder(root.right)
 
     def traversePostorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
         if root is not None:
             self.traversePostorder(root.left)
             self.traversePostorder(root.right)
             print(root.data)
 
-    def leftright(self, node, data):
-        print("left right",node.data)
-        if node is None:
-            pass
-        else:
-            if node.data == data:
-                print("node is data", Tree.left, Tree.parent, Tree.parent.data)
-                return Tree.left, Tree.parent
+    def getParent(target, root):
+        parent, node = None, root
+        while True:
+            if node is None:
+                return None
 
-            if node.data < data:
+            if node.data == target:
+                return parent.data
 
-                Tree.left = 0
-                Tree.parent = node
-                print("node is  rightdata",Tree.left, Tree.parent, Tree.parent.data)
-                Tree.leftright(self, node.right, data)
-
+            if target < node.data:
+                parent, node = node, node.left
             else:
-                Tree.left = 1
-                Tree.parent = Node
-                print("node is  leftdata", Tree.left, Tree.parent, Tree.parent.data)
-                Tree.leftright(self, node.left, data)
+                parent, node = node, node.right
 
 
 
 def main():
     root = None
     tree = Tree()
-    root = tree.insert(root, 10)
+    root = tree.insert(root, 1)
     print(root)
-    tree.insert(root, 20)
-    tree.insert(root, 30)
-    tree.insert(root, 40)
-    tree.insert(root, 70)
-    tree.insert(root, 60)
-    tree.insert(root, 80)
+    tree.insert(root, 11)
+    print("Parent of 11: ",Tree.getParent(11, root))
+    tree.insert(root, 5)
+    print("Parent of 5: ",Tree.getParent(5, root))
+    tree.insert(root, 6)
+    print("Parent of 6: ",Tree.getParent(6, root))
+    tree.insert(root, 2)
+    print("Parent of 2: ",Tree.getParent(2, root))
+    tree.insert(root, 7)
+    print("Parent of 7: ",Tree.getParent(7, root))
+    #tree.insert(root, 80)
 
     print("Traverse Inorder")
     tree.traverseInorder(root)
@@ -154,3 +161,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'binary_tree.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QPainter
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QGraphicsScene
 import tree
 
+# solve insert issue for insertion of 1-11-4-7
+# exception handling for insertion and deletion when no input is given in the text field.
+'''
+node_map stores the labels in a key value pair. nodes is a list of nodes that is ordered. This helps to recreate the binary tree everytime sketch is called.
+line_map stores the lines in a key value pair. During deletion we also want to remove lines. This dictionary helps there
+'''
 class Ui_MainWindow(object):
     row = 0
     col = 0
@@ -34,7 +32,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
 
         self.scene = QGraphicsScene()
-      # self.scene.setSceneRect(40,60,851,561)
+        #self.scene.setSceneRect(40,60,851,561)
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(40, 60, 851, 561))
         self.graphicsView.setObjectName("graphicsView")
@@ -42,11 +40,12 @@ class Ui_MainWindow(object):
         self.graphicsView.show()
 
 
-
         self.ins_button = QtWidgets.QPushButton(self.centralwidget)
         self.ins_button.setGeometry(QtCore.QRect(1120, 140, 75, 31))
         self.ins_button.setObjectName("ins_button")
+
         self.ins_button.clicked.connect(self.insert_clicked)
+
         self.ins_tf = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.ins_tf.setGeometry(QtCore.QRect(990, 140, 104, 31))
         self.ins_tf.setObjectName("ins_tf")
@@ -56,7 +55,9 @@ class Ui_MainWindow(object):
         self.del_button = QtWidgets.QPushButton(self.centralwidget)
         self.del_button.setGeometry(QtCore.QRect(1120, 200, 75, 31))
         self.del_button.setObjectName("del_button")
+
         self.del_button.clicked.connect(self.del_clicked)
+
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
         self.search_button.setGeometry(QtCore.QRect(1120, 260, 75, 31))
         self.search_button.setObjectName("search_button")
@@ -165,14 +166,10 @@ class Ui_MainWindow(object):
 
 
     def insert_clicked(self):
-
-
         inp = self.ins_tf.toPlainText()
-
-        print(inp)
+        inp = int(inp)
         self.ins_tf.setPlainText("")
         global realtree, root
-
         self.nodes.append(inp)
 
         if(self.first == 0):
@@ -180,17 +177,17 @@ class Ui_MainWindow(object):
             realtree = tree.Tree()
             root = realtree.createNode(inp)
             self.sketch()
-
         else:
-            realtree.insert(root, inp)
+            root = realtree.insert(root, inp)
             self.sketch()
 
     def del_clicked(self):
         inp = self.del_tf.toPlainText()
+        inp = int(inp)
         self.del_tf.setPlainText("")
         label = self.node_map[inp]
         label.deleteLater()
-        realtree.deleteNode(root, inp)
+        tree.Tree.deleteNode(root, inp)
         print("nodes before ", self.nodes)
         self.nodes.remove(inp)
         print("nodes after ", self.nodes)
@@ -198,30 +195,35 @@ class Ui_MainWindow(object):
         self.scene.removeItem(line)
         self.sketch()
 
+
     def sketch(self):
         firsts = 0
+        self.scene.clear()
+        print("The list is ", self.nodes)
 
         for key in self.nodes:
-            label = QtWidgets.QLabel(key)
-            if(firsts==0):
+            print("key inserting now is ", key)
+            label = QtWidgets.QLabel(str(key))
+            if (firsts == 0):
                 point = self.scene.addWidget(label)
                 self.node_map[key] = point
-                point.setPos(0,0)
+                point.setPos(0, 0)
                 firsts = 1
             else:
                 parent = self.getParent(key)
                 parentlabel = self.node_map[parent]
                 x = parentlabel.x()
                 y = parentlabel.y()
-                print(x,y, parent)
+                print("x, y, ", key,parent)
                 point = self.scene.addWidget(label)
                 self.node_map[key] = point
-                if(parent > key):
+                if (parent > key):
+                    print("inserting left child")
                     point.setPos(x - 20, y + 30)
                 else:
+                    print("inserting right child")
                     point.setPos(x + 20, y + 30)
-                self.addLinetoNodes(x,y,point,key)
-
+                self.addLinetoNodes(x, y, point, key)
 
     def getParent(self, target):
         parent, node = None, root
@@ -245,4 +247,9 @@ class Ui_MainWindow(object):
         self.line_map[key] = line
         self.scene.addItem(line)
 
+    def check_discrepancy(self):
+        pass
 
+'''
+
+'''
