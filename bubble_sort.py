@@ -1,3 +1,5 @@
+import time
+
 import sbase
 
 
@@ -9,8 +11,10 @@ class bubble:
         # optimize code, so if the array is already sorted, it doesn't need
         # to go through the entire process
         swapped = False
+        print(arr)
         # Traverse through all array elements
         for i in range(n - 1):
+            print(arr)
             # range(n) also work but outer loop will
             # repeat one time more than needed.
             # Last i elements are already in place
