@@ -43,7 +43,6 @@ class Ui_MainWindow(object):
         self.graphicsView.setScene(self.scene)
         self.graphicsView.show()
 
-
         self.ins_button = QtWidgets.QPushButton(self.centralwidget)
         self.ins_button.setGeometry(QtCore.QRect(1120, 140, 75, 31))
         self.ins_button.setObjectName("ins_button")
@@ -183,7 +182,6 @@ class Ui_MainWindow(object):
         self.ins_tf.setPlainText("")
         global realtree, root
         self.nodes.append(inp)
-
         if(self.first == 0):
             self.first = self.first+1
             realtree = tree.Tree()

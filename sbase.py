@@ -1,12 +1,19 @@
 
-from PyQt5.QtCore import QPropertyAnimation, QParallelAnimationGroup
+from PyQt5.QtCore import QPropertyAnimation, QParallelAnimationGroup, QTimeLine, QPointF
+from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem, QGraphicsObject
+
 import bubble_sort
 from PyQt5 import QtCore, QtWidgets
 
-class Ui_MainWindow(object):
+
+class Ui_MainWindow():
+    lable_map = {}
+    arr = None
+    next = False
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1322, 887)
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.next_step = QtWidgets.QPushButton(self.centralwidget)
@@ -54,12 +61,10 @@ class Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(80, 70, 1151, 181))
         self.graphicsView.setObjectName("graphicsView")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(100, 160, 47, 13))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(170, 160, 47, 13))
-        self.label_2.setObjectName("label_2")
+
+        self.scene = QGraphicsScene()
+        self.graphicsView.setScene(self.scene)
+        self.graphicsView.show()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1322, 21))
@@ -71,6 +76,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.ins_but.clicked.connect(self.createArray)
+        self.start_but.clicked.connect(self.start_sequence)
+        self.next_step.clicked.connect(self.setNext)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -88,50 +96,65 @@ class Ui_MainWindow(object):
         self.ins_but.setText(_translate("MainWindow", "Insert"))
         self.insert_info.setText(_translate("MainWindow", "Fill array elements.Eg: \"5,3,4,7,9,5,1,6,0\""))
         self.start_but.setText(_translate("MainWindow", "Start"))
-        self.label.setText(_translate("MainWindow", "TextLabel"))
-        self.label_2.setText(_translate("MainWindow", "TextLabel"))
 
-        self.ins_but.clicked.connect(self.createArray)
-        self.start_but.clicked.connect(self.start_sequence)
 
+
+    def createArray(self):
+        inpstr = self.inp_arr.toPlainText()
+        self.arr = inpstr.split(",")
+        count = 0
+        for i in self.arr:
+            self.arr[count] = int(self.arr[count])
+            count = count + 1
+        print(self.arr)
+        self.sketch(self.arr)
+
+    def sketch(self,arr):
+        self.scene.clear()
+
+        forward = 100
+        for i in arr:
+            label = self.getLabel(i)
+            self.lable_map[i] = label
+            pos_point = QtCore.QPoint(forward, 160)
+            label.setPos(pos_point)
+            forward = forward + 70
+            self.scene.addItem(label)
+        print(self.lable_map)
 
 
 
     def start_sequence(self):
-        bubble_sort.bubble.bubbleSort(self, self.values)
+        bubble_sort.bubble.bubbleSort(self, self.arr)
 
     def onbtnclick(self, larger, smaller):
+        print(smaller, larger)
 
-        label_small = self.arr[smaller]
-        label_larger = self.arr[larger]
+        # animation = QPropertyAnimation(
+        #     self,
+        #     propertyName=b"pos",
+        #     targetObject=label_larger,
+        #     startValue=start_pos,
+        #     endValue=end_pos,
+        #     duration=8000,
+        # )
 
-        start_pos = label_small.pos()
-        end_pos = label_larger.pos()
-
-        animation_group = QParallelAnimationGroup(self)
-
-        animation = QPropertyAnimation(
-            self,
-            propertyName=b"pos",
-            targetObject=label_larger,
-            startValue=start_pos,
-            endValue=end_pos,
-            duration=8000,
-        )
-
-        animation2 = QPropertyAnimation(
-            self,
-            propertyName=b"pos",
-            targetObject=label_small,
-            startValue=end_pos,
-            endValue=start_pos,
-            duration=8000,
-        )
-        animation_group.addAnimation(animation)
-        animation_group.addAnimation(animation2)
-        animation_group.start(QParallelAnimationGroup.DeleteWhenStopped)
+        self.swap_elements(larger, smaller)
+        while(self.next == False):
+            pass
 
 
-    def createArray(self):
-        pass
+    def getLabel(self, i):
+        label = QGraphicsTextItem(str(i))
+        return label
 
+    def swap_elements(self,element1, element2):
+                element2_ref = self.lable_map[element2]
+                element1_ref = self.lable_map[element1]
+                p1 = element1_ref.pos()
+                p2 = element2_ref.pos()
+                element1_ref.setPos(p2)
+                element2_ref.setPos(p1)
+
+    def setNext(self):
+        self.next_step = True

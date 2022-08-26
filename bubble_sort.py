@@ -1,12 +1,9 @@
-import time
 
 import sbase
 
 
 class bubble:
     def bubbleSort(self, arr):
-        swap_smaller = None
-        swap_larger = None
         n = len(arr)
         # optimize code, so if the array is already sorted, it doesn't need
         # to go through the entire process
