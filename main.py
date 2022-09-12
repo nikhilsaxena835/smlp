@@ -1,5 +1,5 @@
 import binary_tree
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication
 import sys
 

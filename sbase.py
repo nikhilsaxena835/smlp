@@ -1,13 +1,12 @@
+import time
 
-from PyQt5.QtCore import QPropertyAnimation, QParallelAnimationGroup, QTimeLine, QPointF
-from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem, QGraphicsObject
+from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem
 
 import bubble_sort
 from PyQt5 import QtCore, QtWidgets
 
 
 class Ui_MainWindow():
-    lable_map = {}
     arr = None
     next = False
     def setupUi(self, MainWindow):
@@ -103,58 +102,65 @@ class Ui_MainWindow():
         inpstr = self.inp_arr.toPlainText()
         self.arr = inpstr.split(",")
         count = 0
+        #convert all array elements from string type to integer type
         for i in self.arr:
             self.arr[count] = int(self.arr[count])
             count = count + 1
         print(self.arr)
         self.sketch(self.arr)
 
+
     def sketch(self,arr):
         self.scene.clear()
 
         forward = 100
         for i in arr:
-            label = self.getLabel(i)
-            self.lable_map[i] = label
+            label = self.getLabel(i, False)
+
             pos_point = QtCore.QPoint(forward, 160)
             label.setPos(pos_point)
             forward = forward + 70
             self.scene.addItem(label)
-        print(self.lable_map)
+
 
 
 
     def start_sequence(self):
         bubble_sort.bubble.bubbleSort(self, self.arr)
 
-    def onbtnclick(self, larger, smaller):
-        print(smaller, larger)
 
-        # animation = QPropertyAnimation(
-        #     self,
-        #     propertyName=b"pos",
-        #     targetObject=label_larger,
-        #     startValue=start_pos,
-        #     endValue=end_pos,
-        #     duration=8000,
-        # )
+    def getLabel(self, i, flag):
+        if flag is False:
+            label = QGraphicsTextItem(str(i))
+        else:
+            label = QGraphicsTextItem(str(i))
+            label.setHtml("<div style='background:#ff0000;'>" + str(i) + "</div>");
 
-        self.swap_elements(larger, smaller)
-        while(self.next == False):
-            pass
-
-
-    def getLabel(self, i):
-        label = QGraphicsTextItem(str(i))
         return label
-
-    def swap_elements(self,element1, element2):
-                element2_ref = self.lable_map[element2]
-                element1_ref = self.lable_map[element1]
-                p1 = element1_ref.pos()
-                p2 = element2_ref.pos()
-                element1_ref.setPos(p2)
-                element2_ref.setPos(p1)
 
     def setNext(self):
         self.next_step = True
+
+    def anim_store(self, anim_store, swap_smaller, swap_larger):
+        block = 0
+        i = 1
+        while(i < len(anim_store)):
+            QApplication.processEvents()
+            self.resketch(anim_store[i], swap_smaller, swap_larger)
+            i = i+1
+            time.sleep(2)
+
+    def resketch(self, arr, swap_smaller, swap_larger):
+        self.scene.clear()
+
+        forward = 100
+        for i in arr:
+            if i == swap_larger or i == swap_smaller:
+                label = self.getLabel(i, True)
+            else:
+                label = self.getLabel(i, False)
+
+            pos_point = QtCore.QPoint(forward, 160)
+            label.setPos(pos_point)
+            forward = forward + 70
+            self.scene.addItem(label)
