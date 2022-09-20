@@ -1,8 +1,7 @@
 
+import avl
 import binary_tree
-from PyQt5 import QtWidgets
 
-import binary_tree    
 from PyQt5 import QtCore, QtGui, QtWidgets  #imported PyQT Library
 
 from PyQt5.QtWidgets import QApplication
@@ -12,7 +11,7 @@ import sys
 import sbase
 
 
-class ExampleApp(QtWidgets.QMainWindow, sbase.Ui_MainWindow):
+class ExampleApp(QtWidgets.QMainWindow, binary_tree.Ui_MainWindow):
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)
         self.setupUi(self)

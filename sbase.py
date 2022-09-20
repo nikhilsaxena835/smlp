@@ -132,6 +132,7 @@ class Ui_MainWindow():
     def getLabel(self, i, flag):
         if flag is False:
             label = QGraphicsTextItem(str(i))
+            label.setHtml("<div style='background:#00ff00;'>" + str(i) + "</div>");
         else:
             label = QGraphicsTextItem(str(i))
             label.setHtml("<div style='background:#ff0000;'>" + str(i) + "</div>");
@@ -141,26 +142,41 @@ class Ui_MainWindow():
     def setNext(self):
         self.next_step = True
 
-    def anim_store(self, anim_store, swap_smaller, swap_larger):
+    def anim_store(self, sort_list, swaplist):
         block = 0
         i = 1
-        while(i < len(anim_store)):
+        list_length = len(sort_list)
+        print("list length is ", list_length)
+        while(i < list_length):
             QApplication.processEvents()
-            self.resketch(anim_store[i], swap_smaller, swap_larger)
-            i = i+1
-            time.sleep(2)
+            print("Swap or not", swaplist[i][2])
 
-    def resketch(self, arr, swap_smaller, swap_larger):
+            if swaplist[i][2] == 1:
+                swap_larger = swaplist[i][0]
+                swap_smaller = swaplist[i][1]
+                print("Swap elements")
+
+                self.resketch(sort_list[i], swap_larger, swap_smaller)
+            else:
+                self.sketch(sort_list[i])
+                print("Dont swap")
+                time.sleep(2)
+            i = i + 1
+        self.sketch(sort_list[list_length-1])
+
+    def resketch(self, arr, swap_larger, swap_smaller):
         self.scene.clear()
 
         forward = 100
-        for i in arr:
-            if i == swap_larger or i == swap_smaller:
-                label = self.getLabel(i, True)
-            else:
-                label = self.getLabel(i, False)
+        for i in range(0, len(arr)):
+                if i == swap_larger or i == swap_smaller:
+                    label = self.getLabel(arr[i], True)
+                    print("RAN")
+                else:
+                    label = self.getLabel(arr[i], False)
+                self.scene.addItem(label)
+                pos_point = QtCore.QPoint(forward, 160)
+                label.setPos(pos_point)
+                forward = forward + 70
 
-            pos_point = QtCore.QPoint(forward, 160)
-            label.setPos(pos_point)
-            forward = forward + 70
-            self.scene.addItem(label)
+# 2,1,7,5,3

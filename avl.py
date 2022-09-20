@@ -3,7 +3,7 @@ import time
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
-import tree
+import avl_tree
 
 # exception handling for insertion and deletion when no input is given in the text field.
 
@@ -15,6 +15,8 @@ to remove lines. This dictionary helps there.
 
 
 class Ui_MainWindow(object):
+    realtree = None
+    root = None
     row = 0
     col = 0
     first = 0
@@ -180,16 +182,20 @@ class Ui_MainWindow(object):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
-        global realtree, root
+
         self.nodes.append(inp)
         if(self.first == 0):
             self.first = self.first+1
-            realtree = tree.Tree()
-            root = realtree.createNode(inp)
+            self.realtree = avl_tree.AVLTree()
+            self.root = self.realtree.insert_node(self.root, inp)
             self.sketch()
+            print(self.root)
         else:
-            root = realtree.insert(root, inp)
+            print(self.root)
+            self.root = self.realtree.insert_node(self.root, inp)
+            print("root now is ", self.root.key)
             self.sketch()
+
 
     def del_clicked(self):
         inp = self.del_tf.toPlainText()
@@ -197,7 +203,7 @@ class Ui_MainWindow(object):
         self.del_tf.setPlainText("")
         label = self.node_map[inp]
         label.deleteLater()
-        tree.Tree.deleteNode(root, inp)
+        avl_tree.AVLTree.delete_node(self.root, inp)
         self.nodes.remove(inp)
         line = self.line_map[inp]
         self.scene.removeItem(line)
@@ -220,6 +226,7 @@ class Ui_MainWindow(object):
                 point.setPos(0, 0)
                 firsts = 1
             else:
+                print("getting parent of ", key)
                 parent = self.getParent(key)
                 parentlabel = self.node_map[parent]
                 x = parentlabel.x()
@@ -233,15 +240,18 @@ class Ui_MainWindow(object):
                 self.addLinetoNodes(x, y, point, key)
 
     def getParent(self, target):
-        parent, node = None, root
+        print("finding parent of ", target)
+        parent, node = None, self.root
         while True:
+            print("reached", node.key)
             if node is None:
                 return None
 
-            if node.data == target:
-                return parent.data
+            if node.key == target:
+                print("parent is ", parent.key)
+                return parent.key
 
-            if target < node.data:
+            if target < node.key:
                 parent, node = node, node.left
             else:
                 parent, node = node, node.right
@@ -271,7 +281,7 @@ class Ui_MainWindow(object):
         print(button_id)
         if button_id == 1:
 
-            path = realtree.traversePreorder(root)
+            path = self.realtree.traversePreorder(self.root)
             print(path)
 
             for key in path:
@@ -282,7 +292,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 2:
-            path = realtree.traversePostorder(root)
+            path = self.realtree.traversePostorder(self.root)
             print(path)
 
             for key in path:
@@ -293,7 +303,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 3:
-            path = realtree.traverseInorder(root)
+            path = self.realtree.traverseInorder(self.root)
             print(path)
 
             for key in path:
@@ -304,7 +314,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 4:
-            path = realtree.traverseLevelorder(root)
+            path = self.realtree.traverseLevelorder(self.root)
             print(path)
 
             for key in path:
@@ -324,4 +334,13 @@ class Ui_MainWindow(object):
         string = prev + str(key) + "->"
         self.output_tf.appendPlainText(string)
 
-
+    def traversePreorder(self, root):
+        path = []
+        if root is not None:
+            path.append(root.data)
+            self.traversePreorder(root.left)
+            self.traversePreorder(root.right)
+        return self.path
+'''
+Problem - write a code to construct a binary tree from its inorder and preorder traversal
+'''
