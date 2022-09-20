@@ -1,19 +1,14 @@
-import time
-
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QGraphicsScene, QApplication
+from PyQt5.QtWidgets import QGraphicsScene
 import tree
 
+# solve insert issue for insertion of 1-11-4-7
 # exception handling for insertion and deletion when no input is given in the text field.
-
 '''
-node_map stores the labels in a key value pair. nodes is a list of nodes that is ordered. This helps to recreate the 
-binary tree everytime sketch is called. line_map stores the lines in a key value pair. During deletion we also want 
-to remove lines. This dictionary helps there.
+node_map stores the labels in a key value pair. nodes is a list of nodes that is ordered. This helps to recreate the binary tree everytime sketch is called.
+line_map stores the lines in a key value pair. During deletion we also want to remove lines. This dictionary helps there
 '''
-
-
 class Ui_MainWindow(object):
     row = 0
     col = 0
@@ -29,6 +24,7 @@ class Ui_MainWindow(object):
         setSceneRect is not used and should be left commented for future.
         '''
 
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1240, 900)
 
@@ -42,6 +38,7 @@ class Ui_MainWindow(object):
         self.graphicsView.setObjectName("graphicsView")
         self.graphicsView.setScene(self.scene)
         self.graphicsView.show()
+
 
         self.ins_button = QtWidgets.QPushButton(self.centralwidget)
         self.ins_button.setGeometry(QtCore.QRect(1120, 140, 75, 31))
@@ -123,13 +120,9 @@ class Ui_MainWindow(object):
         self.reset = QtWidgets.QPushButton(self.centralwidget)
         self.reset.setGeometry(QtCore.QRect(140, 10, 75, 23))
         self.reset.setObjectName("reset")
-        self.buttonGroup = QtWidgets.QButtonGroup(self.centralwidget)
-        self.buttonGroup.setObjectName("groupBox")
-
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(940, 330, 251, 191))
         self.groupBox.setObjectName("groupBox")
-
         self.level = QtWidgets.QRadioButton(self.groupBox)
         self.level.setGeometry(QtCore.QRect(60, 140, 131, 17))
         self.level.setObjectName("level")
@@ -151,11 +144,6 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.buttonGroup.addButton(self.preorder, 1)
-        self.buttonGroup.addButton(self.post, 2)
-        self.buttonGroup.addButton(self.inorder, 3)
-        self.buttonGroup.addButton(self.level, 4)
-        self.buttonGroup.buttonClicked.connect(self.traverse_out)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -176,12 +164,14 @@ class Ui_MainWindow(object):
         self.post.setText(_translate("MainWindow", "Post-order Traversal"))
         self.inorder.setText(_translate("MainWindow", "Inorder Traversal"))
 
+
     def insert_clicked(self):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
         global realtree, root
         self.nodes.append(inp)
+
         if(self.first == 0):
             self.first = self.first+1
             realtree = tree.Tree()
@@ -198,22 +188,22 @@ class Ui_MainWindow(object):
         label = self.node_map[inp]
         label.deleteLater()
         tree.Tree.deleteNode(root, inp)
+        print("nodes before ", self.nodes)
         self.nodes.remove(inp)
+        print("nodes after ", self.nodes)
         line = self.line_map[inp]
         self.scene.removeItem(line)
         self.sketch()
 
 
-    def sketch(self, mark = None, color = 0):
-
+    def sketch(self):
         firsts = 0
         self.scene.clear()
+        print("The list is ", self.nodes)
 
         for key in self.nodes:
-            if color == 0 or mark != key:
-                label = self.createLabel(str(key), "green")
-            elif (color==1) and (mark == key):
-                label = self.createLabel(str(key), "red")
+            print("key inserting now is ", key)
+            label = QtWidgets.QLabel(str(key))
             if (firsts == 0):
                 point = self.scene.addWidget(label)
                 self.node_map[key] = point
@@ -224,12 +214,15 @@ class Ui_MainWindow(object):
                 parentlabel = self.node_map[parent]
                 x = parentlabel.x()
                 y = parentlabel.y()
+                print("x, y, ", key,parent)
                 point = self.scene.addWidget(label)
                 self.node_map[key] = point
                 if (parent > key):
-                    point.setPos(x - 40, y + 50)
+                    print("inserting left child")
+                    point.setPos(x - 20, y + 30)
                 else:
-                    point.setPos(x + 40, y + 50)
+                    print("inserting right child")
+                    point.setPos(x + 20, y + 30)
                 self.addLinetoNodes(x, y, point, key)
 
     def getParent(self, target):
@@ -246,6 +239,7 @@ class Ui_MainWindow(object):
             else:
                 parent, node = node, node.right
 
+
     def addLinetoNodes(self,x1, y1, point, key):
         x2 = point.x()
         y2 = point.y()
@@ -256,72 +250,6 @@ class Ui_MainWindow(object):
     def check_discrepancy(self):
         pass
 
-    def createLabel(self, key, color):
-        label = QtWidgets.QLabel(key)
-        label.setGeometry(QtCore.QRect(320, 220, 31, 31))
-        if(color == "green"):
-            label.setStyleSheet("border: 3px solid blue; border-radius: 10px;background-color: rgb(37, 255, 37)")
-        else:
-            label.setStyleSheet("border: 3px solid blue; border-radius: 10px;background-color: red")
-        return label
+'''
 
-
-    def traverse_out(self):
-        button_id = self.buttonGroup.checkedId()
-        print(button_id)
-        if button_id == 1:
-
-            path = realtree.traversePreorder(root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 2:
-            path = realtree.traversePostorder(root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 3:
-            path = realtree.traverseInorder(root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 4:
-            path = realtree.traverseLevelorder(root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-
-    def anim_traverse(self, key):
-        self.sketch(key, color = 1)
-
-    def output_seq(self, key):
-        prev = self.output_tf.toPlainText()
-        string = prev + str(key) + "->"
-        self.output_tf.appendPlainText(string)
-
-
+'''
