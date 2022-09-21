@@ -163,7 +163,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Binary Tree"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "AVL Tree"))
         self.ins_button.setText(_translate("MainWindow", "Insert Node"))
         self.del_button.setText(_translate("MainWindow", "Delete Node"))
         self.search_button.setText(_translate("MainWindow", "Search Node"))
