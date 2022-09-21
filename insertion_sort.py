@@ -23,6 +23,7 @@ def insertionSort(self, arr):
             j -= 1
         arr[j + 1] = key
     # Traverse through 1 to len(arr)
+        arr = [12, 11, 13, 5, 6]
 
         arr[j + 1] = key
         print("sorted arr", sort_list)
