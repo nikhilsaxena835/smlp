@@ -155,8 +155,17 @@ class AVLTree(object):
             self.printHelper(currPtr.left, indent, False)
             self.printHelper(currPtr.right, indent, True)
 
+    def buildTree(self, preorder, inorder):
+        if not inorder:
+            return None
+        broot = TreeNode(preorder.pop(0))
+        print(broot.key)
+        root_idx = inorder.index(broot.key)
+        broot.left = self.buildTree(preorder, inorder[:root_idx])
+        broot.right = self.buildTree(preorder, inorder[root_idx + 1:])
+        return broot
 
-myTree = AVLTree()
+"""myTree = AVLTree()
 root = None
 nums = [10,20,30]
 for num in nums:
@@ -165,4 +174,4 @@ myTree.printHelper(root, "", True)
 key = 13
 #root = myTree.delete_node(root, key)
 print("After Deletion: ")
-myTree.printHelper(root, "", True)
+myTree.printHelper(root, "", True)"""

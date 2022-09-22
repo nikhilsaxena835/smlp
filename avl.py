@@ -182,19 +182,16 @@ class Ui_MainWindow(object):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
-
+        self.realtree = avl_tree.AVLTree()
+        self.root = self.realtree.insert_node(self.root, inp)
         self.nodes.append(inp)
-        if(self.first == 0):
-            self.first = self.first+1
-            self.realtree = avl_tree.AVLTree()
-            self.root = self.realtree.insert_node(self.root, inp)
-            self.sketch()
-            print(self.root)
-        else:
-            print(self.root)
-            self.root = self.realtree.insert_node(self.root, inp)
-            print("root now is ", self.root.key)
-            self.sketch()
+        pre = self.traversePreorder(self.root)
+        inorder = self.traverseInorder(self.root)
+
+        broot = self.realtree.buildTree(pre, inorder)
+        print(broot.key)
+        self.resketch(broot)
+
 
 
     def del_clicked(self):
@@ -207,13 +204,14 @@ class Ui_MainWindow(object):
         self.nodes.remove(inp)
         line = self.line_map[inp]
         self.scene.removeItem(line)
-        self.sketch()
+        self.resketch()
 
 
     def sketch(self, mark = None, color = 0):
 
         firsts = 0
         self.scene.clear()
+
 
         for key in self.nodes:
             if color == 0 or mark != key:
@@ -337,10 +335,53 @@ class Ui_MainWindow(object):
     def traversePreorder(self, root):
         path = []
         if root is not None:
-            path.append(root.data)
+            path.append(root.key)
             self.traversePreorder(root.left)
             self.traversePreorder(root.right)
-        return self.path
+        return path
+
+    def traverseInorder(self, root):
+        path = []
+        if root is not None:
+            self.traverseInorder(root.left)
+            path.append(root.key)
+            self.traverseInorder(root.right)
+        return path
+
+
+
+
+    def resketch(self, broot, mark=None, color=0):
+
+        firsts = 0
+        if broot is None:
+            return None
+        key = broot.key
+        print(broot.left)
+        print(broot.right)
+        label = self.createLabel(str(key), "green")
+        print("recursion", key)
+        if (firsts == 0):
+            point = self.scene.addWidget(label)
+            self.node_map[key] = point
+            point.setPos(0, 0)
+            firsts = 1
+        else:
+                print("getting parent of ", key)
+                parent = self.getParent(key)
+                parentlabel = self.node_map[parent]
+                x = parentlabel.x()
+                y = parentlabel.y()
+                point = self.scene.addWidget(label)
+                self.node_map[key] = point
+                if (parent > key):
+                    point.setPos(x - 40, y + 50)
+                else:
+                    point.setPos(x + 40, y + 50)
+                self.addLinetoNodes(x, y, point, key)
+        self.resketch(self, broot.left)
+        self.resketch(self, broot.right)
+
 '''
-Problem - write a code to construct a binary tree from its inorder and preorder traversal
+
 '''

@@ -1,3 +1,6 @@
+import qbase
+
+import avl
 import binary_tree
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
@@ -6,12 +9,12 @@ import sys
 
 #from PyQt5.QtGui import QPixmap, QPalette
 #from PyQt5.QtWidgets import QApplication, QScrollArea, QLabel, QPushButton
-
-
+import graph_base
 import sbase
+import stack_base
 import test
-class ExampleApp(QtWidgets.QMainWindow, graph_base.Ui_MainWindow):
-class ExampleApp(QtWidgets.QMainWindow, sbase.Ui_MainWindow):
+
+class ExampleApp(QtWidgets.QMainWindow, stack_base.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)
