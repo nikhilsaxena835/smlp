@@ -14,7 +14,7 @@ import sbase
 import stack_base
 import test
 
-class ExampleApp(QtWidgets.QMainWindow, stack_base.Ui_MainWindow):
+class ExampleApp(QtWidgets.QMainWindow, test.Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)

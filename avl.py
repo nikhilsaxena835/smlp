@@ -1,5 +1,5 @@
 import time
-
+from queue import Queue
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
 
         broot = self.realtree.buildTree(pre, inorder)
         print(broot.key)
-        self.resketch(broot)
+        self.sketch(self.root)
 
 
 
@@ -204,38 +204,49 @@ class Ui_MainWindow(object):
         self.nodes.remove(inp)
         line = self.line_map[inp]
         self.scene.removeItem(line)
-        self.resketch()
+        self.sketch()
 
 
-    def sketch(self, mark = None, color = 0):
+
+
+
+    def ssketch(self, root, mark = None, color = 0):
 
         firsts = 0
         self.scene.clear()
+        Q = Queue()
+        Q.put(root)
 
-
-        for key in self.nodes:
-            if color == 0 or mark != key:
-                label = self.createLabel(str(key), "green")
-            elif (color==1) and (mark == key):
-                label = self.createLabel(str(key), "red")
+        while(not Q.empty()):
+            key = Q.get()
+            data = key.key
+            if key == None:
+                continue
+            if color == 0 or mark != data:
+                label = self.createLabel(str(data), "green")
+            elif (color==1) and (mark == data):
+                label = self.createLabel(str(data), "red")
             if (firsts == 0):
                 point = self.scene.addWidget(label)
-                self.node_map[key] = point
+                self.node_map[data] = point
                 point.setPos(0, 0)
                 firsts = 1
             else:
-                print("getting parent of ", key)
-                parent = self.getParent(key)
+                print("getting parent of ", data)
+                parent = self.getParent(data)
                 parentlabel = self.node_map[parent]
                 x = parentlabel.x()
                 y = parentlabel.y()
                 point = self.scene.addWidget(label)
-                self.node_map[key] = point
-                if (parent > key):
+                self.node_map[data] = point
+                if (parent > data):
                     point.setPos(x - 40, y + 50)
                 else:
                     point.setPos(x + 40, y + 50)
-                self.addLinetoNodes(x, y, point, key)
+                self.addLinetoNodes(x, y, point, data)
+
+            Q.put(key.left)
+            Q.put(key.right)
 
     def getParent(self, target):
         print("finding parent of ", target)
@@ -351,36 +362,7 @@ class Ui_MainWindow(object):
 
 
 
-    def resketch(self, broot, mark=None, color=0):
 
-        firsts = 0
-        if broot is None:
-            return None
-        key = broot.key
-        print(broot.left)
-        print(broot.right)
-        label = self.createLabel(str(key), "green")
-        print("recursion", key)
-        if (firsts == 0):
-            point = self.scene.addWidget(label)
-            self.node_map[key] = point
-            point.setPos(0, 0)
-            firsts = 1
-        else:
-                print("getting parent of ", key)
-                parent = self.getParent(key)
-                parentlabel = self.node_map[parent]
-                x = parentlabel.x()
-                y = parentlabel.y()
-                point = self.scene.addWidget(label)
-                self.node_map[key] = point
-                if (parent > key):
-                    point.setPos(x - 40, y + 50)
-                else:
-                    point.setPos(x + 40, y + 50)
-                self.addLinetoNodes(x, y, point, key)
-        self.resketch(self, broot.left)
-        self.resketch(self, broot.right)
 
 '''
 

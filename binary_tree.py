@@ -257,6 +257,7 @@ class Ui_MainWindow(object):
                 parent, node = node, node.right
 
 
+
     def addLinetoNodes(self,x1, y1, point, key):
         x2 = point.x()
         y2 = point.y()
@@ -334,6 +335,7 @@ class Ui_MainWindow(object):
         prev = self.output_tf.toPlainText()
         string = prev + str(key) + "->"
         self.output_tf.appendPlainText(string)
+
 
 
 '''

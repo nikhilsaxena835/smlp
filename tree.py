@@ -10,8 +10,17 @@ class Tree:
     def createNode(self, data):
         return Node(data)
 
+
     def insert(self, root , data):
         node = root
+
+    def insert(self, node, data):
+        """
+        Insert function will insert a node into tree.
+        Duplicate keys are not allowed.
+        """
+        #if tree is empty , return a root node
+
         if node is None:
             return self.createNode(data)
         else:
