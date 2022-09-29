@@ -1,9 +1,9 @@
-import time
-from queue import Queue
+
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
 import avl_tree
+
 
 # exception handling for insertion and deletion when no input is given in the text field.
 
@@ -15,14 +15,13 @@ to remove lines. This dictionary helps there.
 
 
 class Ui_MainWindow(object):
-    realtree = None
     root = None
-    row = 0
-    col = 0
-    first = 0
-    node_map = {}
-    nodes = []
-    line_map = {}
+    rightend = 0
+    h = 0
+    realtree = avl_tree.AVLTree()
+    firsts = 0
+    count = 0
+
     def setupUi(self, MainWindow):
         '''
         Nodes are drawn on the QGraphicsScene which is contained in the QGraphicsView container.
@@ -61,7 +60,8 @@ class Ui_MainWindow(object):
         self.del_button.setGeometry(QtCore.QRect(1120, 200, 75, 31))
         self.del_button.setObjectName("del_button")
 
-        self.del_button.clicked.connect(self.del_clicked)
+
+
 
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
         self.search_button.setGeometry(QtCore.QRect(1120, 260, 75, 31))
@@ -157,7 +157,7 @@ class Ui_MainWindow(object):
         self.buttonGroup.addButton(self.post, 2)
         self.buttonGroup.addButton(self.inorder, 3)
         self.buttonGroup.addButton(self.level, 4)
-        self.buttonGroup.buttonClicked.connect(self.traverse_out)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -182,98 +182,13 @@ class Ui_MainWindow(object):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
-        self.realtree = avl_tree.AVLTree()
+
         self.root = self.realtree.insert_node(self.root, inp)
-        self.nodes.append(inp)
-        pre = self.traversePreorder(self.root)
-        inorder = self.traverseInorder(self.root)
-
-        broot = self.realtree.buildTree(pre, inorder)
-        print(broot.key)
-        self.sketch(self.root)
-
-
-
-    def del_clicked(self):
-        inp = self.del_tf.toPlainText()
-        inp = int(inp)
-        self.del_tf.setPlainText("")
-        label = self.node_map[inp]
-        label.deleteLater()
-        avl_tree.AVLTree.delete_node(self.root, inp)
-        self.nodes.remove(inp)
-        line = self.line_map[inp]
-        self.scene.removeItem(line)
-        self.sketch()
-
-
-
-
-
-    def ssketch(self, root, mark = None, color = 0):
-
-        firsts = 0
+        self.h = 0
+        self.count = 0
         self.scene.clear()
-        Q = Queue()
-        Q.put(root)
+        self.sketch(self.root, 2, 0, 0)
 
-        while(not Q.empty()):
-            key = Q.get()
-            data = key.key
-            if key == None:
-                continue
-            if color == 0 or mark != data:
-                label = self.createLabel(str(data), "green")
-            elif (color==1) and (mark == data):
-                label = self.createLabel(str(data), "red")
-            if (firsts == 0):
-                point = self.scene.addWidget(label)
-                self.node_map[data] = point
-                point.setPos(0, 0)
-                firsts = 1
-            else:
-                print("getting parent of ", data)
-                parent = self.getParent(data)
-                parentlabel = self.node_map[parent]
-                x = parentlabel.x()
-                y = parentlabel.y()
-                point = self.scene.addWidget(label)
-                self.node_map[data] = point
-                if (parent > data):
-                    point.setPos(x - 40, y + 50)
-                else:
-                    point.setPos(x + 40, y + 50)
-                self.addLinetoNodes(x, y, point, data)
-
-            Q.put(key.left)
-            Q.put(key.right)
-
-    def getParent(self, target):
-        print("finding parent of ", target)
-        parent, node = None, self.root
-        while True:
-            print("reached", node.key)
-            if node is None:
-                return None
-
-            if node.key == target:
-                print("parent is ", parent.key)
-                return parent.key
-
-            if target < node.key:
-                parent, node = node, node.left
-            else:
-                parent, node = node, node.right
-
-    def addLinetoNodes(self,x1, y1, point, key):
-        x2 = point.x()
-        y2 = point.y()
-        line = QtWidgets.QGraphicsLineItem(x1, y1, x2, y2)
-        self.line_map[key] = line
-        self.scene.addItem(line)
-
-    def check_discrepancy(self):
-        pass
 
     def createLabel(self, key, color):
         label = QtWidgets.QLabel(key)
@@ -284,84 +199,44 @@ class Ui_MainWindow(object):
             label.setStyleSheet("border: 3px solid blue; border-radius: 10px;background-color: red")
         return label
 
+    def sketch(self, root, l, x, y):
 
-    def traverse_out(self):
-        button_id = self.buttonGroup.checkedId()
-        print(button_id)
-        if button_id == 1:
-
-            path = self.realtree.traversePreorder(self.root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 2:
-            path = self.realtree.traversePostorder(self.root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 3:
-            path = self.realtree.traverseInorder(self.root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
-
-        if button_id == 4:
-            path = self.realtree.traverseLevelorder(self.root)
-            print(path)
-
-            for key in path:
-                self.output_seq(key)
-                self.anim_traverse(key)
-                self.anim_traverse(key)
-                QApplication.processEvents()
-                time.sleep(1)
-            path.clear()
+        print(root.key)
+        label = self.createLabel(str(root.key), "green")
+        point = self.scene.addWidget(label)
 
 
-    def anim_traverse(self, key):
-        self.sketch(key, color = 1)
+        if l == 2:
+            print("I run once")
+            x = point.pos().x()
+            y = point.pos().y()
+            print(x,y)
 
-    def output_seq(self, key):
-        prev = self.output_tf.toPlainText()
-        string = prev + str(key) + "->"
-        self.output_tf.appendPlainText(string)
+        if l == 1:
+            print("This is l")
+            print(x, y)
+            point.setPos(x - 40, y + 40)
+            self.scene.addLine(x, y, x - 40, y + 40)
+            print("Inserting", root.key)
+            x = point.pos().x()
+            y = point.pos().y()
+            print(x, y)
 
-    def traversePreorder(self, root):
-        path = []
-        if root is not None:
-            path.append(root.key)
-            self.traversePreorder(root.left)
-            self.traversePreorder(root.right)
-        return path
+        if l == 0:
+            print("This is r")
+            point.setPos(x + 40, y + 40)
+            self.scene.addLine(x, y, x + 40, y + 40)
+            print("Inserting", root.key)
+            x = point.pos().x()
+            y = point.pos().y()
 
-    def traverseInorder(self, root):
-        path = []
-        if root is not None:
-            self.traverseInorder(root.left)
-            path.append(root.key)
-            self.traverseInorder(root.right)
-        return path
+        if root.left:
+            print("This is lr")
+            self.sketch(root.left, 1, x, y)
 
-
-
-
+        if root.right:
+            print("This is rr")
+            self.sketch(root.right, 0, x, y)
 
 
 '''

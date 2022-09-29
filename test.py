@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
 import avl_tree
 
+
 # exception handling for insertion and deletion when no input is given in the text field.
 
 '''
@@ -18,6 +19,7 @@ class Ui_MainWindow(object):
     realtree = None
     root = None
     rightend = 0
+
 
     def setupUi(self, MainWindow):
         '''
