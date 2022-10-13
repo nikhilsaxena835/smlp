@@ -1,9 +1,10 @@
 import time
 
-from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem
+from PyQt5.QtGui import QBrush
+from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem, QGraphicsRectItem
 
 import bubble_sort
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 
 
 class Ui_MainWindow():
@@ -58,7 +59,7 @@ class Ui_MainWindow():
         self.start_but.setGeometry(QtCore.QRect(1130, 820, 75, 23))
         self.start_but.setObjectName("start_but")
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
-        self.graphicsView.setGeometry(QtCore.QRect(80, 70, 1151, 181))
+        self.graphicsView.setGeometry(QtCore.QRect(80, 70, 1151, 411))
         self.graphicsView.setObjectName("graphicsView")
 
         self.scene = QGraphicsScene()
@@ -78,6 +79,17 @@ class Ui_MainWindow():
         self.ins_but.clicked.connect(self.createArray)
         self.start_but.clicked.connect(self.start_sequence)
         self.next_step.clicked.connect(self.setNext)
+        self.scene.setSceneRect(-150,150,360,180)
+
+        self.buttonGroup = QtWidgets.QButtonGroup(self.centralwidget)
+        self.buttonGroup.setObjectName("groupBox")
+
+        self.buttonGroup.addButton(self.bubble, 1)
+        self.buttonGroup.addButton(self.selection, 2)
+        self.buttonGroup.addButton(self.insertion, 3)
+        self.buttonGroup.addButton(self.merge, 4)
+        self.buttonGroup.addButton(self.quick, 5)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -112,21 +124,59 @@ class Ui_MainWindow():
 
     def sketch(self,arr):
         self.scene.clear()
+        data_list = arr
+        canvas_height = 411
+        canvas_width = 1151
+        x_width = 100 / (len(data_list) + 1)
+        #offset = 10
+        offset = 0
+        spacing = 10
+        xoff = 0
+        print(x_width)
+        # create a normalized size so it fills screen better
+        normalized_data = [i / max(data_list) for i in data_list]
+        for i, height in enumerate(normalized_data):
+            # top left
+            x0 = (i * x_width) + offset + spacing
+            y0 = canvas_height - (height * 100)
+            offset = 18
+            # bottom right
+            #x1 = ((height + 1) * x_width) + offset
+            x1 = 50 + xoff
+            y1 = 100
+            xoff = 20
+            print(x0, y0, x1, y1,i, height)
+            # draws the rectangles
+            ritem = self.scene.addRect(QtCore.QRectF(x0, y0, x1, y1), pen=QtGui.QPen(), brush=QtGui.QBrush(QtCore.Qt.red))
+            label = QtWidgets.QLabel(str(data_list[i]))
+            litem = self.scene.addWidget(label)
+            litem.setPos(x0 + 2, y0)
+            #ritem.setPos(x1, 100)
 
-        forward = 100
-        for i in arr:
-            label = self.getLabel(i, False)
+            print("the pos is ",ritem.x(),ritem.y())
+            
 
-            pos_point = QtCore.QPoint(forward, 160)
-            label.setPos(pos_point)
-            forward = forward + 70
-            self.scene.addItem(label)
+
+
+
+
+        # updates the whole window
+        QApplication.processEvents()
 
 
 
 
     def start_sequence(self):
-        bubble_sort.bubble.bubbleSort(self, self.arr)
+        button_id = self.buttonGroup.checkedId()
+        print(button_id)
+        if button_id == 1:
+            bubble_sort.bubble.bubbleSort(self, self.arr)
+        if button_id == 2:
+            pass
+        if button_id == 3:
+            pass
+        if button_id == 4:
+            pass
 
 
     def getLabel(self, i, flag):

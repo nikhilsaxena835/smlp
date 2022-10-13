@@ -1,8 +1,11 @@
+import networkx.algorithms
 from PyQt5 import QtWidgets
 import sys
 import networkx as nx
 from graph_ui import Ui_Dijsktra
-
+from sys import maxsize
+from itertools import permutations
+from networkx.algorithms import approximation
 
 class GUI(QtWidgets.QMainWindow):
     """Main GUI class to handle UI and controller functions.
@@ -32,8 +35,9 @@ class GUI(QtWidgets.QMainWindow):
         self.form.pushButton.clicked.connect(self.DFS)
         self.form.pushButton_3.clicked.connect(self.remove_node)
         self.form.remove_edge.clicked.connect(self.disconnect_nodes)
-        self.form.floyd.clicked.connect(self.floyd_warshall)
-        self.form.hamil.clicked.connect(self.hamCycle)
+
+        self.form.hamil.clicked.connect(self.hamil_handler)
+        self.form.travelsales.clicked.connect(self.tsphandler2)
 
     def show_dialog(self, message):
         """Opening a new error window with a given error message.
@@ -202,126 +206,17 @@ class GUI(QtWidgets.QMainWindow):
 
 
     def floyd_warshall(self):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        res = [[key] + val for key, val in d_of_lists.items()]
+        ans = networkx.algorithms.floyd_warshall(self.G)
+        self.form.textEdit_3.setText(str(ans))
+
+    def hamil_handler(self):
+        ans = networkx.algorithms.tournament.hamiltonian_path(self.G)
+        self.form.textEdit_3.setText(str(ans))
 
 
-        A = nx.adjacency_matrix(self.G)
-        print(A)
-        print(type(A))
-        dist = list(map(lambda i: list(map(lambda j: j, i)), res))
-
-        V = self.G.number_of_nodes()
-        for k in range(V):
-
-            # pick all vertices as source one by one
-            for i in range(V):
-
-                # Pick all vertices as destination for the
-                # above picked source
-                for j in range(V):
-                    # If vertex k is on the shortest path from
-                    # i to j, then update the value of dist[i][j]
-                    dist[i][j] = min(dist[i][j],
-                                     dist[i][k] + dist[k][j]
-                                     )
-        result = self.printSolution(dist, V)
-        self.form.result_text.setText(result)
-
-    # A utility function to print the solution
-    def printSolution(self,distance, nV):
-        print("Following matrix shows the shortest distances\
-         between every pair of vertices")
-        string = "The output matrix : \n"
-        for i in range(nV):
-            for j in range(nV):
-                if (distance[i][j] == 99999):
-                    string = string + "INF"
-
-                else:
-                    string = string + distance[i][j]
-
-            string = string + ""
-        return string
-
-    ''' Check if this vertex is an adjacent vertex
-            of the previously added vertex and is not
-            included in the path earlier '''
-
-    def isSafe(self, v, pos, path):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        graph = [[key] + val for key, val in d_of_lists.items()]
-        # Check if current vertex and last vertex
-        # in path are adjacent
-        if graph[path[pos - 1]][v] == 0:
-            return False
-
-        # Check if current vertex not already in path
-        for vertex in path:
-            if vertex == v:
-                return False
-
-        return True
-
-    # A recursive utility function to solve
-    # hamiltonian cycle problem
-    def hamCycleUtil(self, path, pos):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        graph = [[key] + val for key, val in d_of_lists.items()]
-
-        V = self.G.number_of_nodes()
-        # base case: if all vertices are
-        # included in the path
-        if pos == V:
-            # Last vertex must be adjacent to the
-            # first vertex in path to make a cycle
-            if graph[path[pos - 1]][path[0]] == 1:
-                return True
-            else:
-                return False
-
-        # Try different vertices as a next candidate
-        # in Hamiltonian Cycle. We don't try for 0 as
-        # we included 0 as starting point in hamCycle()
-        for v in range(1, V):
-
-            if self.isSafe(v, pos, path) == True:
-
-                path[pos] = v
-
-                if self.hamCycleUtil(path, pos + 1) == True:
-                    return True
-
-                # Remove current vertex if it doesn't
-                # lead to a solution
-                path[pos] = -1
-
-        return False
-
-    def hamCycle(self):
-        V = self.G.number_of_nodes()
-        path = [-1] * V
-
-        ''' Let us put vertex 0 as the first vertex
-            in the path. If there is a Hamiltonian Cycle,
-            then the path can be started from any point
-            of the cycle as the graph is undirected '''
-        path[0] = 0
-
-        if self.hamCycleUtil(path, 1) == False:
-            print("Solution does not exist\n")
-            return False
-
-        self.printSolution1(path)
-        return True
-
-    def printSolution1(self, path):
-        print("Solution Exists: Following",
-              "is one Hamiltonian Cycle")
-        for vertex in path:
-            print(vertex, end=" ")
-        print(path[0], "\n")
-
+    def tsphandler2(self):
+        ans = approximation.traveling_salesman_problem(self.G)
+        self.form.textEdit_3.setText(str(ans))
 
 mainloop = QtWidgets.QApplication([])
 run_app = GUI()

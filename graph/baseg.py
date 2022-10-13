@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'djikstra.ui'
+# Form implementation generated from reading ui file 'graph.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 import networkx as nx
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib import pyplot as plt
 #from matplotlib.backends.backend_template import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 
-class Ui_Dijsktra(object):
-    def setupUi(self, Dijsktra):
-        Dijsktra.setObjectName("Dijsktra")
-        Dijsktra.resize(1298, 896)
-        self.centralwidget = QtWidgets.QWidget(Dijsktra)
+class Ui_Basic(object):
+    def setupUi(self, Basic):
+        Basic.setObjectName("Basic")
+        Basic.resize(1298, 896)
+        self.centralwidget = QtWidgets.QWidget(Basic)
         self.centralwidget.setObjectName("centralwidget")
         self.node1_text = QtWidgets.QTextEdit(self.centralwidget)
         self.node1_text.setGeometry(QtCore.QRect(521, 560, 71, 41))
@@ -69,15 +71,6 @@ class Ui_Dijsktra(object):
         self.label_8 = QtWidgets.QLabel(self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(921, 490, 31, 21))
         self.label_8.setObjectName("label_8")
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(871, 560, 61, 41))
-        self.textEdit.setObjectName("textEdit")
-        self.label_9 = QtWidgets.QLabel(self.centralwidget)
-        self.label_9.setGeometry(QtCore.QRect(871, 540, 61, 19))
-        self.label_9.setObjectName("label_9")
-        self.run_button = QtWidgets.QPushButton(self.centralwidget)
-        self.run_button.setGeometry(QtCore.QRect(950, 510, 100, 21))
-        self.run_button.setObjectName("run_button")
         self.line_3 = QtWidgets.QFrame(self.centralwidget)
         self.line_3.setGeometry(QtCore.QRect(291, 470, 721, 20))
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
@@ -91,84 +84,118 @@ class Ui_Dijsktra(object):
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
         self.label_11.setGeometry(QtCore.QRect(601, 690, 71, 20))
         self.label_11.setObjectName("label_11")
-        self.result_text = QtWidgets.QTextEdit(self.centralwidget)
-        self.result_text.setGeometry(QtCore.QRect(421, 710, 461, 91))
-        self.result_text.setReadOnly(True)
-        self.result_text.setObjectName("textEdit_3")
+        self.textEdit_3 = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit_3.setGeometry(QtCore.QRect(421, 710, 461, 91))
+        self.textEdit_3.setReadOnly(True)
+        self.textEdit_3.setObjectName("textEdit_3")
         self.connect_button = QtWidgets.QPushButton(self.centralwidget)
         self.connect_button.setGeometry(QtCore.QRect(530, 620, 100, 27))
         self.connect_button.setObjectName("connect_button")
         self.resetgraph_button = QtWidgets.QPushButton(self.centralwidget)
         self.resetgraph_button.setGeometry(QtCore.QRect(940, 730, 111, 41))
         self.resetgraph_button.setObjectName("resetgraph_button")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(950, 540, 101, 21))
-        self.pushButton.setObjectName("pushButton")
-        self.floyd = QtWidgets.QPushButton(self.centralwidget)
-        self.floyd.setGeometry(QtCore.QRect(950, 570, 101, 21))
-        self.floyd.setObjectName("floyd")
-        self.hamil = QtWidgets.QPushButton(self.centralwidget)
-        self.hamil.setGeometry(QtCore.QRect(950, 600, 111, 21))
-        self.hamil.setObjectName("hamil")
-        self.travelsales = QtWidgets.QPushButton(self.centralwidget)
-        self.travelsales.setGeometry(QtCore.QRect(950, 630, 131, 23))
-        self.travelsales.setObjectName("travelsales")
         self.remove_edge = QtWidgets.QPushButton(self.centralwidget)
         self.remove_edge.setGeometry(QtCore.QRect(660, 620, 81, 31))
         self.remove_edge.setObjectName("remove_edge")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(394, 610, 81, 31))
         self.pushButton_3.setObjectName("pushButton_3")
-        Dijsktra.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(Dijsktra)
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(870, 530, 75, 23))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(870, 570, 101, 23))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(850, 600, 121, 23))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(870, 640, 75, 23))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_6.setGeometry(QtCore.QRect(980, 530, 81, 23))
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_7.setGeometry(QtCore.QRect(980, 570, 75, 23))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_8.setGeometry(QtCore.QRect(980, 600, 75, 23))
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.pushButton_9 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_9.setGeometry(QtCore.QRect(980, 630, 75, 23))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.pushButton_10 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_10.setGeometry(QtCore.QRect(1130, 530, 75, 23))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.pushButton_11 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_11.setGeometry(QtCore.QRect(1130, 560, 75, 23))
+        self.pushButton_11.setObjectName("pushButton_11")
+        self.pushButton_12 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_12.setGeometry(QtCore.QRect(1120, 600, 111, 23))
+        self.pushButton_12.setObjectName("pushButton_12")
+        self.pushButton_13 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_13.setGeometry(QtCore.QRect(1090, 630, 151, 23))
+        self.pushButton_13.setObjectName("pushButton_13")
+        self.pushButton_14 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_14.setGeometry(QtCore.QRect(1120, 660, 75, 23))
+        self.pushButton_14.setObjectName("pushButton_14")
+        self.pushButton_15 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_15.setGeometry(QtCore.QRect(1130, 690, 75, 23))
+        self.pushButton_15.setObjectName("pushButton_15")
+        Basic.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(Basic)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1298, 21))
         self.menubar.setObjectName("menubar")
-        Dijsktra.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(Dijsktra)
+        Basic.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(Basic)
         self.statusbar.setObjectName("statusbar")
-        Dijsktra.setStatusBar(self.statusbar)
-
-
-
-        self.error_dialog = QtWidgets.QErrorMessage()
+        Basic.setStatusBar(self.statusbar)
 
         self.plot_canvas = PlotCanvas(self.centralwidget)
         self.plot_canvas.setGeometry(QtCore.QRect(190, 30, 891, 431))
         self.plot_canvas.setObjectName("plot_canvas")
 
-        self.retranslateUi(Dijsktra)
-        QtCore.QMetaObject.connectSlotsByName(Dijsktra)
 
-    def retranslateUi(self, Dijsktra):
+
+        self.retranslateUi(Basic)
+        QtCore.QMetaObject.connectSlotsByName(Basic)
+
+    def retranslateUi(self, Basic):
         _translate = QtCore.QCoreApplication.translate
-        Dijsktra.setWindowTitle(_translate("Dijsktra", "Dijkstra"))
-        self.addnode_button.setText(_translate("Dijsktra", "Add Node"))
-        self.newnode_text.setHtml(_translate("Dijsktra",
-                                             "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                             "p, li { white-space: pre-wrap; }\n"
-                                             "</style></head><body style=\" font-family:\'DejaVu Sans\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-                                             "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.label.setText(_translate("Dijsktra", "Node Name"))
-        self.label_2.setText(_translate("Dijsktra", "New Node"))
-        self.label_3.setText(_translate("Dijsktra", "Connect Nodes"))
-        self.label_4.setText(_translate("Dijsktra", "Node 1"))
-        self.label_5.setText(_translate("Dijsktra", "Node 2"))
-        self.label_6.setText(_translate("Dijsktra", "Weight"))
-        self.label_7.setText(_translate("Dijsktra", "Graph"))
-        self.label_8.setText(_translate("Dijsktra", "Run"))
-        self.label_9.setText(_translate("Dijsktra", "Source"))
-        self.run_button.setText(_translate("Dijsktra", "DFS"))
-        self.label_11.setText(_translate("Dijsktra", "Information"))
-        self.connect_button.setText(_translate("Dijsktra", "Connect"))
-        self.resetgraph_button.setText(_translate("Dijsktra", "Reset Graph"))
-        self.pushButton.setText(_translate("Dijsktra", "BFS"))
-        self.floyd.setText(_translate("Dijsktra", "Floyd- Warshall"))
-        self.hamil.setText(_translate("Dijsktra", "Hamiltonian Cycle"))
-        self.travelsales.setText(_translate("Dijsktra", "Travelling Salesperson"))
-        self.remove_edge.setText(_translate("Dijsktra", "Disconnect"))
-        self.pushButton_3.setText(_translate("Dijsktra", "Remove Node"))
-
+        Basic.setWindowTitle(_translate("Basic", "MainWindow"))
+        self.addnode_button.setText(_translate("Basic", "Add Node"))
+        self.newnode_text.setHtml(_translate("Basic", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'DejaVu Sans\'; font-size:12pt;\"><br /></p></body></html>"))
+        self.label.setText(_translate("Basic", "Node Name"))
+        self.label_2.setText(_translate("Basic", "New Node"))
+        self.label_3.setText(_translate("Basic", "Connect Nodes"))
+        self.label_4.setText(_translate("Basic", "Node 1"))
+        self.label_5.setText(_translate("Basic", "Node 2"))
+        self.label_6.setText(_translate("Basic", "Weight"))
+        self.label_7.setText(_translate("Basic", "Graph"))
+        self.label_8.setText(_translate("Basic", "Run"))
+        self.label_11.setText(_translate("Basic", "Information"))
+        self.connect_button.setText(_translate("Basic", "Connect"))
+        self.resetgraph_button.setText(_translate("Basic", "Reset Graph"))
+        self.remove_edge.setText(_translate("Basic", "Disconnect"))
+        self.pushButton_3.setText(_translate("Basic", "Remove Node"))
+        self.pushButton.setText(_translate("Basic", "Complement"))
+        self.pushButton_2.setText(_translate("Basic", "Node Connectivity"))
+        self.pushButton_4.setText(_translate("Basic", "Minimal Maximal Matching"))
+        self.pushButton_5.setText(_translate("Basic", "Vertex Cover"))
+        self.pushButton_6.setText(_translate("Basic", "K- Components"))
+        self.pushButton_7.setText(_translate("Basic", "Independent Set"))
+        self.pushButton_8.setText(_translate("Basic", "Max Clique"))
+        self.pushButton_9.setText(_translate("Basic", "Diameter"))
+        self.pushButton_10.setText(_translate("Basic", "IsBipartite"))
+        self.pushButton_11.setText(_translate("Basic", "Coloring"))
+        self.pushButton_12.setText(_translate("Basic", "Strongly Connected"))
+        self.pushButton_13.setText(_translate("Basic", "Weakly Connected"))
+        self.pushButton_14.setText(_translate("Basic", "Is Eularian"))
+        self.pushButton_15.setText(_translate("Basic", "Planarity"))
 
 class PlotCanvas(FigureCanvas):  # By inheriting the FigureCanvas class, this class is both a PyQt5 Qwidget and a Matplotlib FigureCanvas, which is the key to connecting pyqt5 and matplotlib
     """A UI element to plotting networkx graph on window.
