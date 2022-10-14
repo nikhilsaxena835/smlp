@@ -12,8 +12,8 @@ import random
 # build the window base
 root = Tk()
 root.title("Sorting Algorithm Visualization")
-root.maxsize(900, 600)
-root.config(bg="black")
+root.maxsize(1322, 887)
+# root.config(bg="white")
 
 # Global variables
 selected_algorithm = StringVar()
@@ -33,8 +33,8 @@ def draw_data(data_list, color_list):
     canvas.delete("all")
 
     # set up the basic parameters for drawing the data
-    canvas_height = 380
-    canvas_width = 600
+    canvas_height = 450
+    canvas_width = 900
     x_width = canvas_width / (len(data_list) + 1)
     offset = 10
     spacing = 10
@@ -120,15 +120,15 @@ def start_algorithm():
 
 
 # seperating the layouts (inputs for the user)
-ui_frame = Frame(root, width=600, height=200, bg="grey")
-ui_frame.grid(row=0, column=0, padx=10, pady=5)
+ui_frame = Frame(root, width=1322, height=887, )
+ui_frame.grid(row=1, column=0, padx=10, pady=5)
 
 # space for the data and sorting to be visualized
-canvas = Canvas(root, width=600, height=380, bg="white")
-canvas.grid(row=1, column=0, padx=10, pady=5)
+canvas = Canvas(root, width=1300, height=550, bg="white")
+canvas.grid(row=0, column=0, padx=10, pady=5)
 
 # building the UI
-Label(ui_frame, text="Algorithm: ", bg="grey").grid(
+Label(ui_frame, text="Algorithm: ").grid(
     row=0, column=0, padx=5, pady=5, sticky="w"
 )
 
@@ -163,19 +163,19 @@ speed_scale = Scale(
     label="Select Speed(sec)",
 )
 speed_scale.grid(row=0, column=2, padx=5, pady=5)
-Button(ui_frame, text="start", command=start_algorithm, bg="red").grid(
+Button(ui_frame, text="start", command=start_algorithm).grid(
     row=0, column=3, padx=5, pady=5
 )
 
 # size input
-Label(ui_frame, text="Size: ", bg="grey").grid(
+Label(ui_frame, text="Size: ").grid(
     row=1, column=0, padx=5, pady=5, sticky="w"
 )
 size_entry = Entry(ui_frame)
 size_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
 # button for generating the data set
-Button(ui_frame, text="Generate", command=generate, bg="white").grid(
+Button(ui_frame, text="Generate", command=generate).grid(
     row=1, column=2, padx=5, pady=5
 )
 
