@@ -5,6 +5,7 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene
@@ -205,4 +206,14 @@ class Ui_MainWindow(object):
 
 
 
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_MainWindow()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
 
+
+if __name__ == '__main__':
+    main()

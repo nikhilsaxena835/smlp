@@ -1,8 +1,8 @@
-
+import sys
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
-import avl_tree
+from trees import avl_tree
 
 
 # exception handling for insertion and deletion when no input is given in the text field.
@@ -238,7 +238,17 @@ class Ui_MainWindow(object):
             print("This is rr")
             self.sketch(root.right, 0, x, y)
 
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_MainWindow()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
 
+
+if __name__ == '__main__':
+    main()
 '''
 
 '''

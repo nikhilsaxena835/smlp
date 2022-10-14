@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 import math
+import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QLineF, QPointF
@@ -327,3 +328,16 @@ class Ui_MainWindow(object):
 
     def searchop(self):
         pass
+
+
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_MainWindow()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

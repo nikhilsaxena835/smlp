@@ -1,8 +1,9 @@
+import sys
 import time
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
-import tree
+from trees import tree
 
 # solve insert issue for insertion of 1-11-4-7
 # exception handling for insertion and deletion when no input is given in the text field.
@@ -336,7 +337,17 @@ class Ui_MainWindow(object):
         string = prev + str(key) + "->"
         self.output_tf.appendPlainText(string)
 
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_MainWindow()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
 
+
+if __name__ == '__main__':
+    main()
 
 '''
 

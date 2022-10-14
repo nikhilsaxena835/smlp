@@ -5,6 +5,8 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+import sys
+
 import networkx as nx
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib import pyplot as plt
@@ -197,3 +199,15 @@ class PlotCanvas(FigureCanvas):  # By inheriting the FigureCanvas class, this cl
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
         nx.draw(G, pos, with_labels=True, font_size=11, node_size=150, node_color="r", font_color="w")
         self.draw_idle()
+
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_Dijsktra()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

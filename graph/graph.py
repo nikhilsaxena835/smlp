@@ -205,21 +205,18 @@ class GUI(QtWidgets.QMainWindow):
             self.show_dialog(f"Edge: {node1, node2} doesn't exist.")
 
 
-    def floyd_warshall(self):
-        ans = networkx.algorithms.floyd_warshall(self.G)
-        self.form.textEdit_3.setText(str(ans))
 
     def hamil_handler(self):
         ans = networkx.algorithms.tournament.hamiltonian_path(self.G)
-        self.form.textEdit_3.setText(str(ans))
+        self.form.result_text.setText(str(ans))
 
 
     def tsphandler2(self):
         ans = approximation.traveling_salesman_problem(self.G)
-        self.form.textEdit_3.setText(str(ans))
+        self.form.result_text.setText(str(ans))
 
-mainloop = QtWidgets.QApplication([])
+"""mainloop = QtWidgets.QApplication([])
 run_app = GUI()
 run_app.show()
-sys.exit(mainloop.exec_())
+sys.exit(mainloop.exec_())"""
 

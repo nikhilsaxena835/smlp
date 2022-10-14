@@ -5,13 +5,15 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.QtWidgets import QGraphicsScene, QMainWindow
 
 
 class Ui_MainWindow(object):
     pstack = []
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1240, 900)
@@ -182,4 +184,14 @@ class Ui_MainWindow(object):
         else:
             self.output_tf.setPlainText("Stack is Empty")
 
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = QtWidgets.QMainWindow()
+    main = Ui_MainWindow()
+    main.setupUi(ui)
+    main.show()
+    sys.exit(app.exec_())
 
+
+if __name__ == '__main__':
+    main()
