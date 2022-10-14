@@ -1,5 +1,5 @@
 import time
-from Swap import _swap
+from sort.gui_based_sorts.Swap import _swap
 
 
 def cocktail_sort(data_list, draw_data, time_value):
@@ -8,7 +8,7 @@ def cocktail_sort(data_list, draw_data, time_value):
     Expected Complexity (Sort Only): O(n^2) (time) and O(1) (space)
 
     :param data_list: Python list to be sorted
-    :param draw_data: function written in main.py that visualizes the list
+    :param draw_data: function written in sortmain.py that visualizes the list
     :param time_value: Float based on the input for time between each step
     """
 

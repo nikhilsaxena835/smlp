@@ -1,5 +1,5 @@
 import time
-from Swap import _swap
+from sort.gui_based_sorts.Swap import _swap
 
 
 def find_pivot(data_list, start, end):
@@ -38,7 +38,7 @@ def partition(data_list, start, end, draw_data, time_value):
     :param data_list: Python list to be partitioned
     :param start: Integer for the starting index in the list
     :param end: Integer for the ending index in the list
-    :param draw_data: Function written in main.py that visualizes the list
+    :param draw_data: Function written in sortmain.py that visualizes the list
     :param time_value: Float based on the input for time between steps
 
     :return: Integer for the index of the pivot value after the partition
@@ -95,7 +95,7 @@ def quick_sort(data_list, start, end, draw_data, time_value):
     :param data_list: Python list to be sorted
     :param start: Integer of the starting index in the list
     :param end: Integer of the ending index in the list
-    :param draw_data: Function written in main.py to visualize the list
+    :param draw_data: Function written in sortmain.py to visualize the list
     :param time_value: Float based on the input for the time between steps
     """
     # stop when the start and end index are equal (or when start > end)

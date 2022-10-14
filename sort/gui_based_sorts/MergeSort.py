@@ -10,7 +10,7 @@ def merge(data_list, start, middle, end, draw_data, time_value):
     :param start: Integer for the starting index in the list
     :param middle: Integer for the middle index in the list
     :param end: Integer for the ending index in the list
-    :param draw_data: Function written in main.py to visualize the list
+    :param draw_data: Function written in sortmain.py to visualize the list
     :param time_value: Float based on the input for the time between steps
     """
 
@@ -63,7 +63,7 @@ def merge_sort(data_list, start, end, draw_data, time_value):
     :param data_list: Python list to be sorted
     :param start: Integer for the starting index in the list
     :param end: Integer for the ending index in the list
-    :param draw_data: Function written in main.py to visualize the list
+    :param draw_data: Function written in sortmain.py to visualize the list
     :param time_value: Float based on the input for the time between steps
     """
 

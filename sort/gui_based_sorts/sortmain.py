@@ -1,15 +1,16 @@
 from tkinter import *
 from tkinter import ttk
-from BubbleSort import bubble_sort
-from SelectionSort import selection_sort
-from InsertionSort import insertion_sort
-from QuickSort import quick_sort
-from MergeSort import merge_sort
-from HeapSort import heap_sort
-from CocktailSort import cocktail_sort
+from sort.gui_based_sorts.BubbleSort import bubble_sort
+from sort.gui_based_sorts.SelectionSort import selection_sort
+from sort.gui_based_sorts.InsertionSort import insertion_sort
+from sort.gui_based_sorts.QuickSort import quick_sort
+from sort.gui_based_sorts.MergeSort import merge_sort
+from sort.gui_based_sorts.HeapSort import heap_sort
+from sort.gui_based_sorts.CocktailSort import cocktail_sort
 import random
 
 # build the window base
+
 root = Tk()
 root.title("Sorting Algorithm Visualization")
 root.maxsize(1322, 887)
@@ -119,7 +120,7 @@ def start_algorithm():
         cocktail_sort(data_list, draw_data, speed_scale.get())
 
 
-# seperating the layouts (inputs for the user)
+    # seperating the layouts (inputs for the user)
 ui_frame = Frame(root, width=1322, height=887, )
 ui_frame.grid(row=1, column=0, padx=10, pady=5)
 
@@ -180,4 +181,5 @@ Button(ui_frame, text="Generate", command=generate).grid(
 )
 
 # run the main loop and start the application
-root.mainloop()
+def startevent():
+    root.mainloop()

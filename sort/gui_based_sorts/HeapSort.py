@@ -1,5 +1,5 @@
 import time
-from Swap import _swap
+from sort.gui_based_sorts.Swap import _swap
 
 
 def heapify(data_list, size, root_index, draw_data, time_value):
@@ -10,7 +10,7 @@ def heapify(data_list, size, root_index, draw_data, time_value):
     :param data_list: Python list to be heapified
     :param size: Integer of the size of the list to be heapified
     :param root_index: Integer of the index in the list of the root
-    :param draw_data: Function written in main.py that visualizes the list
+    :param draw_data: Function written in sortmain.py that visualizes the list
     :param time_value: Float based on the input for time between each step
     """
 
@@ -53,7 +53,7 @@ def heap_sort(data_list, draw_data, time_value):
     Expected Complexity (Sort only): O(n*log(n)) (time) and O(1) (space)
 
     :param data_list: Python list to be sorted
-    :param draw_data: Function written in main.py that visualizes the list
+    :param draw_data: Function written in sortmain.py that visualizes the list
     :param time_value: Float based on the input for time between each step
     """
 

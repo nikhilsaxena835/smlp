@@ -5,6 +5,8 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+import os
+import subprocess
 import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -13,7 +15,7 @@ from PyQt5.QtWidgets import QApplication
 from lists import stack_base, qbase, ll
 from graph import baseg, graph_ui, shortest
 
-from sort import gui_based_sorts
+from sort.gui_based_sorts import sortmain
 from trees import avl, binary_tree
 import searches
 
@@ -39,7 +41,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(50, 20, 71, 16))
         font = QtGui.QFont()
-        font.setFamily("Segoe UI Light")
+        font.setFamily("Segoe UI")
         font.setPointSize(13)
         self.label.setFont(font)
         self.label.setObjectName("label")
@@ -91,9 +93,7 @@ class Ui_MainWindow(object):
         self.pushButton_17.setObjectName("pushButton_17")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(370, 20, 71, 21))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(13)
+
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
@@ -122,6 +122,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
 
         self.stack_menu.clicked.connect(self.stackstart)
         self.queue_menu.clicked.connect(self.queuestart)
@@ -224,4 +226,6 @@ class Ui_MainWindow(object):
         self.MainWindow.show()
 
     def sortstart(self):
-        pass
+        sortmain.startevent()
+        #os.system("sort/gui_based_sorts/sortmain.py")
+        #subprocess.Popen(['python', 'sort/gui_based_sorts/sortmain.py'])
