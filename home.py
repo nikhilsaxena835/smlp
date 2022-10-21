@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 
 from lists import stack_base, qbase, ll
-from graph import baseg, graph_ui, shortest
+from graph import basegclass, shortest_help, graph
 
 from sort.gui_based_sorts import sortmain
 from trees import avl, binary_tree
@@ -190,24 +190,31 @@ class Ui_MainWindow(object):
         self.MainWindow.show()
 
     def graph_basic_start(self):
-        self.MainWindow = QtWidgets.QMainWindow()
+        self.obj = basegclass.GUI()
+        self.obj.show()
+        """self.MainWindow = QtWidgets.QMainWindow()
         self.ui = baseg.Ui_Basic()
         self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()
+        self.MainWindow.show()"""
 
     def graph_misc(self):
-        self.MainWindow = QtWidgets.QMainWindow()
+        self.obj = graph.GUI()
+        self.obj.show()
+        """self.MainWindow = QtWidgets.QMainWindow()
         self.ui = graph_ui.Ui_Dijsktra()
         self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()
+        self.MainWindow.show()"""
 
     def graph_shortest(self):
-        self.MainWindow = QtWidgets.QMainWindow()
-        self.ui = shortest.Ui_Shortest()
+        self.obj = shortest_help.GUI()
+        self.obj.show()
+        """self.MainWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_Shortest()
         self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()
+        self.MainWindow.show()"""
 
     def avltree(self):
+
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = avl.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)

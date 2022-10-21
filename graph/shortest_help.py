@@ -2,7 +2,7 @@ import networkx.algorithms.operators
 from PyQt5 import QtWidgets
 import sys
 import networkx as nx
-from shortest import Ui_Shortest
+from graph.shortest import Ui_Shortest
 from sys import maxsize
 from itertools import permutations
 from networkx.algorithms import approximation
@@ -16,6 +16,7 @@ class GUI(QtWidgets.QMainWindow):
     def __init__(self):
         """Constructor of GUI.
         """
+        print("Constr")
         super(GUI, self).__init__()
         self.setup_gui()
 
@@ -176,7 +177,7 @@ class GUI(QtWidgets.QMainWindow):
         print(ans)
         self.form.textEdit_3.setText(str(ans))
 
-mainloop = QtWidgets.QApplication([])
+"""mainloop = QtWidgets.QApplication([])
 run_app = GUI()
 run_app.show()
-sys.exit(mainloop.exec_())
+sys.exit(mainloop.exec_())"""

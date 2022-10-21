@@ -2,7 +2,7 @@ import networkx.algorithms.operators
 from PyQt5 import QtWidgets
 import sys
 import networkx as nx
-from baseg import Ui_Basic
+from graph.baseg import Ui_Basic
 from sys import maxsize
 from itertools import permutations
 from networkx.algorithms import approximation
@@ -65,7 +65,7 @@ class GUI(QtWidgets.QMainWindow):
     def add_new_node(self):
         """ Adding a new node to the Graph.
         """
-
+        print("Add new")
         new_node = str(self.form.newnode_text.toPlainText())
         if not new_node:
             self.form.newnode_text.clear()
@@ -424,7 +424,7 @@ class GUI(QtWidgets.QMainWindow):
 
 
 
-mainloop = QtWidgets.QApplication([])
+"""mainloop = QtWidgets.QApplication([])
 run_app = GUI()
 run_app.show()
-sys.exit(mainloop.exec_())
+sys.exit(mainloop.exec_())"""

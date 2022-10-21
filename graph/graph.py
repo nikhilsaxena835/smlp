@@ -2,7 +2,7 @@ import networkx.algorithms
 from PyQt5 import QtWidgets
 import sys
 import networkx as nx
-from graph_ui import Ui_Dijsktra
+from graph.graph_ui import Ui_Dijsktra
 from sys import maxsize
 from itertools import permutations
 from networkx.algorithms import approximation
