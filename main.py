@@ -21,7 +21,7 @@ def main():
 
     form.show()
     app.exec_()
-    input("efsfdf")
+
 
 
 if __name__ == '__main__':

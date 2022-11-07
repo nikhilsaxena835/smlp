@@ -154,7 +154,7 @@ class Ui_Basic(object):
 
 
         self.plot_canvas = PlotCanvas(self.centralwidget)
-        self.plot_canvas.setGeometry(QtCore.QRect(190, 30, 891, 431))
+        self.plot_canvas.setGeometry(QtCore.QRect(20, 20, 891, 431))
         self.plot_canvas.setObjectName("plot_canvas")
 
 
@@ -164,7 +164,7 @@ class Ui_Basic(object):
 
     def retranslateUi(self, Basic):
         _translate = QtCore.QCoreApplication.translate
-        Basic.setWindowTitle(_translate("Basic", "MainWindow"))
+        Basic.setWindowTitle(_translate("Basic", "Graph - Basic Operations"))
         self.addnode_button.setText(_translate("Basic", "Add Node"))
         self.newnode_text.setHtml(_translate("Basic", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -194,8 +194,7 @@ class Ui_Basic(object):
         self.pushButton_9.setText(_translate("Basic", "Diameter"))
         self.pushButton_10.setText(_translate("Basic", "IsBipartite"))
         self.pushButton_11.setText(_translate("Basic", "Coloring"))
-        self.pushButton_12.setText(_translate("Basic", "Strongly Connected"))
-        self.pushButton_13.setText(_translate("Basic", "Weakly Connected"))
+
         self.pushButton_14.setText(_translate("Basic", "Is Eularian"))
         self.pushButton_15.setText(_translate("Basic", "Planarity"))
 
