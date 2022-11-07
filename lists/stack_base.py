@@ -121,14 +121,15 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.ins_button.clicked.connect(self.spush)
-        self.del_button.clicked.connect(self.spop)
+        self.del_button.clicked.connect(self.checker)
         self.search_button.clicked.connect(self.s_top)
         self.pushButton.clicked.connect(self.isempty)
         self.pushButton_2.clicked.connect(self.lsize)
+        self.reset.clicked.connect(self.clearall)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Binary Tree"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Stack"))
         self.ins_button.setText(_translate("MainWindow", "Push"))
         self.del_button.setText(_translate("MainWindow", "Pop"))
         self.search_button.setText(_translate("MainWindow", "Top"))
@@ -140,11 +141,27 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "IsEmpty"))
         self.pushButton_2.setText(_translate("MainWindow", "Size"))
 
+    def clearall(self):
+        self.scene.clear()
+        self.output_tf.setPlainText('')
+        self.textEdit.setPlainText('')
+
+    def checker(self):
+        if(len(self.pstack) == 1):
+            self.clearall()
+            self.pstack.pop()
+
+        else:
+            self.spop()
+
     def spush(self):
         element = self.ins_tf.toPlainText()
         self.ins_tf.setPlainText('')
         self.pstack.append(element)
         self.sketch()
+
+        self.textEdit.setText("")
+        self.textEdit.setText("The push operation adds an element and increments the top index, after checking for overflow")
 
     def sketch(self):
         defx = 450
@@ -177,6 +194,10 @@ class Ui_MainWindow(object):
         length = self.lsize()
         self.pstack.pop(length-1)
         self.sketch()
+
+        self.operations_label.setText("")
+        self.operations_label.setText(
+            "Pop decrements the top index after checking for underflow, and returns the item that was previously the top one")
 
     def isempty(self):
         if self.lsize()>0:

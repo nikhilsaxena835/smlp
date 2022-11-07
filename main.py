@@ -14,8 +14,14 @@ class ExampleApp(QtWidgets.QMainWindow, home.Ui_MainWindow):
 def main():
     app = QApplication(sys.argv)
     form = ExampleApp()
+
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap('icon.png'))
+    form.setWindowIcon(icon)
+
     form.show()
     app.exec_()
+    input("efsfdf")
 
 
 if __name__ == '__main__':

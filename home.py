@@ -1,16 +1,5 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'home.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-import os
-import subprocess
-import sys
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication
+
 
 from lists import stack_base, qbase, ll
 from graph import basegclass, shortest_help, graph
@@ -21,6 +10,7 @@ import searches
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1339, 891)
@@ -58,6 +48,7 @@ class Ui_MainWindow(object):
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setGeometry(QtCore.QRect(170, 120, 75, 23))
         self.pushButton_4.setObjectName("pushButton_4")
+
         self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_7.setGeometry(QtCore.QRect(50, 170, 75, 23))
         self.pushButton_7.setObjectName("pushButton_7")
@@ -120,8 +111,19 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.btree = QtWidgets.QPushButton(self.centralwidget)
+        self.btree.setGeometry(QtCore.QRect(170, 170, 75, 23))
+        self.btree.setObjectName("B Tree")
+
+        self.bplus = QtWidgets.QPushButton(self.centralwidget)
+        self.bplus.setGeometry(QtCore.QRect(170, 220, 75, 23))
+        self.bplus.setObjectName("B+ Tree")
+        self.btree.setEnabled(False)
+        self.bplus.setEnabled(False)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
 
 
@@ -138,7 +140,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Home"))
         self.stack_menu.setText(_translate("MainWindow", "Stack"))
         self.queue_menu.setText(_translate("MainWindow", "Queue"))
         self.label.setText(_translate("MainWindow", "Lists"))
@@ -151,6 +153,8 @@ class Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Shortest Paths Algorithms"))
         self.pushButton_13.setText(_translate("MainWindow", "Misc"))
         self.pushButton_17.setText(_translate("MainWindow", "Sorting"))
+        self.bplus.setText(_translate("MainWindow", "B+ Tree"))
+        self.btree.setText(_translate("MainWindow", "B Tree"))
         self.label_5.setText(_translate("MainWindow", "Graphs"))
         self.label_6.setText(_translate("MainWindow", "Sorting"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -175,64 +179,80 @@ class Ui_MainWindow(object):
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = stack_base.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def queuestart(self):
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = qbase.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def llstart(self):
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = ll.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def graph_basic_start(self):
         self.obj = basegclass.GUI()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.obj.setWindowIcon(icon)
         self.obj.show()
-        """self.MainWindow = QtWidgets.QMainWindow()
-        self.ui = baseg.Ui_Basic()
-        self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()"""
+
 
     def graph_misc(self):
         self.obj = graph.GUI()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.obj.setWindowIcon(icon)
         self.obj.show()
-        """self.MainWindow = QtWidgets.QMainWindow()
-        self.ui = graph_ui.Ui_Dijsktra()
-        self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()"""
+
 
     def graph_shortest(self):
         self.obj = shortest_help.GUI()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.obj.setWindowIcon(icon)
         self.obj.show()
-        """self.MainWindow = QtWidgets.QMainWindow()
-        self.ui = Ui_Shortest()
-        self.ui.setupUi(self.MainWindow)
-        self.MainWindow.show()"""
+
 
     def avltree(self):
-
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = avl.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def binarytree(self):
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = binary_tree.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def searches(self):
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = searches.Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('icon.png'))
+        self.MainWindow.setWindowIcon(icon)
         self.MainWindow.show()
 
     def sortstart(self):
         sortmain.startevent()
-        #os.system("sort/gui_based_sorts/sortmain.py")
-        #subprocess.Popen(['python', 'sort/gui_based_sorts/sortmain.py'])
+

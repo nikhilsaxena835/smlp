@@ -174,10 +174,11 @@ class Ui_MainWindow(object):
         self.buttonGroup.addButton(self.cll, 3)
         self.buttonGroup.addButton(self.cdll, 4)
         self.buttonGroup.buttonClicked.connect(self.setmode)
+        self.show_dialog("Do not proceed without selecting a list type. \n")
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Binary Tree"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Linked List"))
         self.ins_atbeg.setText(_translate("MainWindow", "Insert At Beginning"))
         self.ins_atlast.setText(_translate("MainWindow", "Insert At Last"))
         self.output_label.setText(_translate("MainWindow", "Output :"))
@@ -198,6 +199,17 @@ class Ui_MainWindow(object):
         self.cll.setText(_translate("MainWindow", "Circular Linked List"))
         self.cdll.setText(_translate("MainWindow", "Circular Doubly Linked List"))
 
+    def show_dialog(self, message):
+        """Opening a new error window with a given error message.
+        Args:
+            message (string): error text.
+        """
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("Information")
+        msg.setInformativeText(message)
+        msg.setWindowTitle("Please keep in mind!")
+        msg.exec_()
 
     def insbeg(self):
         node = self.ins_tf.toPlainText()

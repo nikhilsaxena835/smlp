@@ -121,11 +121,12 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.ins_button.clicked.connect(self.enqueue)
-        self.del_button.clicked.connect(self.dequeue)
+        self.del_button.clicked.connect(self.checker)
         self.search_button.clicked.connect(self.printFront)
         self.pushButton.clicked.connect(self.printRear)
         self.pushButton_2.clicked.connect(self.printSize)
         self.pushButton_3.clicked.connect(self.isempty)
+        self.reset.clicked.connect(self.clearall)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -145,25 +146,48 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Size"))
         self.pushButton_3.setText(_translate("MainWindow", "IsEmpty"))
 
+    def clearall(self):
+        self.scene.clear()
+        self.output_tf.setPlainText('')
+        self.textEdit.setPlainText('')
+
+    def checker(self):
+        if(len(self.pqueue) == 1):
+            self.clearall()
+            self.pqueue.pop()
+
+        else:
+            self.dequeue()
+
     def enqueue(self):
         element = self.ins_tf.toPlainText()
         self.ins_tf.setPlainText('')
         self.pqueue.append(element)
         self.sketch()
+        self.textEdit.setText("")
+        self.textEdit.setText(
+            "Adds (or stores) an element to the end of the queue.")
 
     def dequeue(self):
         self.pqueue.pop(0)
         self.sketch()
+        self.textEdit.setText("")
+        self.textEdit.setText(
+            "Removes (or access) the first element from the queue.")
 
     def printFront(self):
         front = self.front_rear(1)
         string = "Front is " + front
         self.output_tf.setPlainText(string)
+        self.textEdit.setText("")
+
 
     def printRear(self):
         rear = self.front_rear(2)
         string = "Rear is " + rear
         self.output_tf.setPlainText(string)
+        self.textEdit.setText("")
+
 
     def printSize(self):
         size = self.lsize()
