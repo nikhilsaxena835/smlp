@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
         self.ins_button.setGeometry(QtCore.QRect(1120, 140, 75, 31))
         self.ins_button.setObjectName("ins_button")
 
-        self.ins_button.clicked.connect(self.insert_clicked)
+        self.ins_button.clicked.connect(self.check_discrepancy)
 
         self.ins_tf = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.ins_tf.setGeometry(QtCore.QRect(990, 140, 104, 31))
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         self.del_button.setGeometry(QtCore.QRect(1120, 200, 75, 31))
         self.del_button.setObjectName("del_button")
 
-        self.del_button.clicked.connect(self.del_clicked)
+        self.del_button.clicked.connect(self.check_discrepancy2)
 
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
         self.search_button.setGeometry(QtCore.QRect(1120, 260, 75, 31))
@@ -111,10 +111,10 @@ class Ui_MainWindow(object):
         self.output_tf.setGeometry(QtCore.QRect(990, 550, 221, 31))
         self.output_tf.setObjectName("output_tf")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(140, 550, 711, 91))
+        self.textEdit.setGeometry(QtCore.QRect(140, 620, 711, 91))
         self.textEdit.setObjectName("textEdit")
         self.info_label = QtWidgets.QLabel(self.centralwidget)
-        self.info_label.setGeometry(QtCore.QRect(30, 560, 81, 16))
+        self.info_label.setGeometry(QtCore.QRect(30, 620, 81, 16))
         self.info_label.setObjectName("info_label")
         self.back = QtWidgets.QPushButton(self.centralwidget)
         self.back.setGeometry(QtCore.QRect(20, 10, 75, 23))
@@ -154,7 +154,10 @@ class Ui_MainWindow(object):
         self.buttonGroup.addButton(self.level, 4)
         self.buttonGroup.buttonClicked.connect(self.traverse_out)
 
-
+        self.textEdit.setText("Binary Search Tree is a node-based binary tree data structure which has the following "
+                              "properties:The left subtree of a node contains only nodes with keys lesser than "
+                              "the node’s key. The right subtree of a node contains only nodes with keys greater than "
+                              "the node’s key. The left and right subtree each must also be a binary search tree.")
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -184,6 +187,12 @@ class Ui_MainWindow(object):
         global realtree, root
         self.nodes.append(inp)
 
+        self.textEdit.setText("Inserting a value in the correct position is similar to searching because we try to "
+                              "maintain the rule that the left subtree is lesser than root and the right subtree is "
+                              "larger than root.We keep going to either right subtree or left subtree depending on "
+                              "the value and when we reach a point left or right subtree is null, "
+                              "we put the new node there.")
+
         if(self.first == 0):
             self.first = self.first+1
             realtree = tree.Tree()
@@ -192,6 +201,8 @@ class Ui_MainWindow(object):
         else:
             root = realtree.insert(root, inp)
             self.sketch()
+
+
 
     def del_clicked(self):
         inp = self.del_tf.toPlainText()
@@ -203,6 +214,11 @@ class Ui_MainWindow(object):
         print("nodes before ", self.nodes)
         self.nodes.remove(inp)
         print("nodes after ", self.nodes)
+        self.textEdit.setText("In a binary search tree, we must delete a node from the tree by keeping in mind that the "
+                              "property of BST is not violated. To delete a node from BST, there are three possible "
+                              "situations occur -The node to be deleted is the leaf node, or, "
+                              "The node to be deleted has only one child, and, "
+                              "The node to be deleted has two children")
         line = self.line_map[inp]
         self.scene.removeItem(line)
         self.sketch()
@@ -267,7 +283,32 @@ class Ui_MainWindow(object):
         self.scene.addItem(line)
 
     def check_discrepancy(self):
-        pass
+        inp = self.ins_tf.toPlainText()
+        if inp.isnumeric() == True:
+            self.insert_clicked()
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("Error")
+            message = "Please enter a numeric value only"
+            msg.setInformativeText(message)
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return
+
+    def check_discrepancy2(self):
+        inp2 = self.del_tf.toPlainText()
+        if inp2.isnumeric() == True:
+            self.del_clicked()
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("Error")
+            message = "Please enter a numeric value only"
+            msg.setInformativeText(message)
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return
 
     def createLabel(self, key, color):
         label = QtWidgets.QLabel(key)
@@ -317,7 +358,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 4:
-            path = realtree.traverseLevelorder(root)
+            path = realtree.levelOrderTraversal(root)
             print(path)
 
             for key in path:
@@ -331,6 +372,7 @@ class Ui_MainWindow(object):
 
     def anim_traverse(self, key):
         self.sketch(key, color = 1)
+
 
     def output_seq(self, key):
         prev = self.output_tf.toPlainText()

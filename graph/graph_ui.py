@@ -35,10 +35,10 @@ class Ui_Dijsktra(object):
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
         self.label_11.setGeometry(QtCore.QRect(350, 600, 71, 20))
         self.label_11.setObjectName("label_11")
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(140, 490, 461, 91))
-        self.textEdit.setReadOnly(True)
-        self.textEdit.setObjectName("textEdit_3")
+        self.result_text = QtWidgets.QTextEdit(self.centralwidget)
+        self.result_text.setGeometry(QtCore.QRect(140, 490, 461, 91))
+        self.result_text.setReadOnly(True)
+        self.result_text.setObjectName("textEdit_3")
         self.src = QtWidgets.QTextEdit(self.centralwidget)
         self.src.setGeometry(QtCore.QRect(760, 510, 104, 31))
         self.src.setObjectName("src")
@@ -137,7 +137,7 @@ class Ui_Dijsktra(object):
 
     def retranslateUi(self, Dijsktra):
         _translate = QtCore.QCoreApplication.translate
-        Dijsktra.setWindowTitle(_translate("Dijsktra", "Dijkstra"))
+        Dijsktra.setWindowTitle(_translate("Dijsktra", "Miscellaneous"))
         self.addnode_button.setText(_translate("Dijsktra", "Add Node"))
         self.newnode_text.setHtml(_translate("Dijsktra",
                                              "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

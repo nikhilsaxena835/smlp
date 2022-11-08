@@ -168,8 +168,9 @@ class GUI(QtWidgets.QMainWindow):
     def bellford(self):
         node1 = str(self.form.src.toPlainText())
         node2 = str(self.form.dest.toPlainText())
-        ans = networkx.algorithms.shortest_paths.bellman_ford_path(self.G, node1, node2)
+        ans = networkx.bellman_ford_path(self.G, node1, node2)
         self.form.textEdit_3.setText(str(ans))
+
 
     def floyd(self):
 

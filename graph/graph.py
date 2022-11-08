@@ -35,7 +35,7 @@ class GUI(QtWidgets.QMainWindow):
         self.form.pushButton.clicked.connect(self.DFS)
         self.form.pushButton_3.clicked.connect(self.remove_node)
         self.form.remove_edge.clicked.connect(self.disconnect_nodes)
-
+        self.form.hamil.setEnabled(False)
         self.form.hamil.clicked.connect(self.hamil_handler)
         self.form.travelsales.clicked.connect(self.tsphandler2)
 
@@ -101,10 +101,10 @@ class GUI(QtWidgets.QMainWindow):
         """Takes source and destination from user and runs the Dijkstra algorithm to calculate shortest path.
         """
 
-        node = str(self.form.textEdit.toPlainText())
+        node = str(self.form.src.toPlainText())
 
         result = 'The BFS traversal is '
-        self.form.textEdit.clear()
+        self.form.src.clear()
 
         visited = []  # List for visited nodes.
         queue = []
@@ -134,8 +134,8 @@ class GUI(QtWidgets.QMainWindow):
 
 
     def DFS(self):
-        start = self.form.textEdit.toPlainText()
-        self.form.textEdit.clear()
+        start = self.form.src.toPlainText()
+        self.form.src.clear()
         result = 'The DFS traversal is '
         graph = nx.convert.to_dict_of_lists(self.G)
 

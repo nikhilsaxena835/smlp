@@ -1,6 +1,5 @@
 # AVL tree implementation in Python
-
-
+import collections
 import sys
 
 # Create a tree node
@@ -164,6 +163,66 @@ class AVLTree(object):
         broot.left = self.buildTree(preorder, inorder[:root_idx])
         broot.right = self.buildTree(preorder, inorder[root_idx + 1:])
         return broot
+
+    def traverseInorder(self, root):
+        path = []
+        if root is not None:
+            self.traverseInorder(root.left)
+            path.append(root.key)
+            self.traverseInorder(root.right)
+        return path
+
+    def traversePreorder(self, root):
+        path = []
+        if root is not None:
+            path.append(root.key)
+            self.traversePreorder(root.left)
+            self.traversePreorder(root.right)
+        return path
+
+    def traversePostorder(self, root):
+        path = []
+        if root is not None:
+            self.traversePostorder(root.left)
+            self.traversePostorder(root.right)
+            path.append(root.key)
+        return path
+
+    def levelOrderTraversal(self, root):
+        ans = []
+
+        # Return Null if the tree is empty
+        if root is None:
+            return ans
+
+        # Initialize queue
+        queue = collections.deque()
+        queue.append(root.key)
+
+        # Iterate over the queue until it's empty
+        while queue:
+            # Check the length of queue
+            currSize = len(queue)
+            currList = []
+
+            while currSize > 0:
+                # Dequeue element
+                currNode = queue.popleft()
+                currList.append(currNode.val)
+                currSize -= 1
+
+                # Check for left child
+                if currNode.left is not None:
+                    queue.append(currNode.left)
+                # Check for right child
+                if currNode.right is not None:
+                    queue.append(currNode.right)
+
+            # Append the currList to answer after each iteration
+            ans.append(currList)
+
+        # Return answer list
+        return ans
 
 """myTree = AVLTree()
 root = None

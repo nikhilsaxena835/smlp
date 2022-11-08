@@ -1,4 +1,5 @@
 import sys
+import time
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
@@ -48,7 +49,7 @@ class Ui_MainWindow(object):
         self.ins_button.setGeometry(QtCore.QRect(1120, 140, 75, 31))
         self.ins_button.setObjectName("ins_button")
 
-        self.ins_button.clicked.connect(self.insert_clicked)
+        self.ins_button.clicked.connect(self.check_discrepancy)
 
         self.ins_tf = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.ins_tf.setGeometry(QtCore.QRect(990, 140, 104, 31))
@@ -61,7 +62,7 @@ class Ui_MainWindow(object):
         self.del_button.setObjectName("del_button")
 
 
-
+        self.del_button.clicked.connect(self.check_discrepancy2)
 
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
         self.search_button.setGeometry(QtCore.QRect(1120, 260, 75, 31))
@@ -114,10 +115,10 @@ class Ui_MainWindow(object):
         self.output_tf.setGeometry(QtCore.QRect(990, 550, 221, 31))
         self.output_tf.setObjectName("output_tf")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(140, 590, 711, 91))
+        self.textEdit.setGeometry(QtCore.QRect(140, 620, 711, 91))
         self.textEdit.setObjectName("textEdit")
         self.info_label = QtWidgets.QLabel(self.centralwidget)
-        self.info_label.setGeometry(QtCore.QRect(30, 560, 81, 16))
+        self.info_label.setGeometry(QtCore.QRect(30, 620, 81, 16))
         self.info_label.setObjectName("info_label")
         self.back = QtWidgets.QPushButton(self.centralwidget)
         self.back.setGeometry(QtCore.QRect(20, 10, 75, 23))
@@ -158,6 +159,16 @@ class Ui_MainWindow(object):
         self.buttonGroup.addButton(self.inorder, 3)
         self.buttonGroup.addButton(self.level, 4)
 
+        self.buttonGroup.buttonClicked.connect(self.traverse_out)
+
+        self.textEdit.setText(
+            "AVL tree is a self-balancing Binary Search Tree (BST) where the difference between heigh" +
+            "ts of left and right subtree cannot be more than one for all nodes. " +
+            "Lookup, insertion, and deletion all take O(log n) time in both the average and worst" +
+            " cases, where {\displaystyle n}n is the number of nodes in the tree prior to the " +
+            "operation. Insertions and deletions may require the tree to be rebalanced by one or " +
+            "more tree rotations.")
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -182,10 +193,24 @@ class Ui_MainWindow(object):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
-
+        self.textEdit.setText("Insertion in AVL tree is performed in the same way as it is performed in a binary search tree. "
+                      "However, it may lead to violation in the AVL tree property and therefore the tree may need "
+                      "balancing. The tree can be balanced by applying rotations.")
         self.root = self.realtree.insert_node(self.root, inp)
         self.h = 0
         self.count = 0
+        self.scene.clear()
+        self.sketch(self.root, 2, 0, 0)
+
+
+    def del_clicked(self):
+        inp = self.del_tf.toPlainText()
+        inp = int(inp)
+        self.del_tf.setPlainText("")
+        self.textEdit.setText("Deletion can also be performed in the same way as it is performed in a binary search "
+                              "tree. Deletion may also disturb the balance of the tree therefore, various types of "
+                              "rotations are used to rebalance the tree.")
+        self.root = self.realtree.delete_node(self.root, inp)
         self.scene.clear()
         self.sketch(self.root, 2, 0, 0)
 
@@ -202,7 +227,9 @@ class Ui_MainWindow(object):
     def sketch(self, root, l, x, y):
 
         print(root.key)
+
         label = self.createLabel(str(root.key), "green")
+
         point = self.scene.addWidget(label)
 
 
@@ -237,6 +264,92 @@ class Ui_MainWindow(object):
         if root.right:
             print("This is rr")
             self.sketch(root.right, 0, x, y)
+
+    def check_discrepancy(self):
+        inp = self.ins_tf.toPlainText()
+        if inp.isnumeric() == True:
+            self.insert_clicked()
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("Error")
+            message = "Please enter a numeric value only"
+            msg.setInformativeText(message)
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return
+
+    def check_discrepancy2(self):
+
+        inp2 = self.del_tf.toPlainText()
+        if inp2.isnumeric() == True:
+            self.del_clicked()
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("Error")
+            message = "Please enter a numeric value only"
+            msg.setInformativeText(message)
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            return
+
+    def traverse_out(self):
+        button_id = self.buttonGroup.checkedId()
+        print(button_id)
+        if button_id == 1:
+
+            path = self.realtree.traversePreorder(self.root)
+            print(path)
+
+            for key in path:
+                self.output_seq(key)
+                self.anim_traverse(key)
+                QApplication.processEvents()
+                time.sleep(1)
+            path.clear()
+
+        if button_id == 2:
+            path = self.realtree.traversePostorder(self.root)
+            print(path)
+
+            for key in path:
+                self.output_seq(key)
+                self.anim_traverse(key)
+                QApplication.processEvents()
+                time.sleep(1)
+            path.clear()
+
+        if button_id == 3:
+            path = self.realtree.traverseInorder(self.root)
+            print(path)
+
+            for key in path:
+                self.output_seq(key)
+                self.anim_traverse(key)
+                QApplication.processEvents()
+                time.sleep(1)
+            path.clear()
+
+        if button_id == 4:
+            path = self.realtree.levelOrderTraversal(self.root)
+            print(path)
+
+            for key in path:
+                self.output_seq(key)
+                self.anim_traverse(key)
+                self.anim_traverse(key)
+                QApplication.processEvents()
+                time.sleep(1)
+            path.clear()
+
+    def anim_traverse(self, key):
+        pass
+
+    def output_seq(self, key):
+        prev = self.output_tf.toPlainText()
+        string = prev + str(key) + "->"
+        self.output_tf.appendPlainText(string)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

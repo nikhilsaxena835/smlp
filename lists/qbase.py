@@ -120,6 +120,11 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.textEdit.setText("A queue is a useful data structure in programming. It is similar to the ticket queue "
+                              "outside a cinema hall, where the first person entering the queue is the first "
+                              "person who gets the ticket.Queue follows the First In First Out (FIFO) rule - the item "
+                              "that goes in first is the item that comes out first.")
+
         self.ins_button.clicked.connect(self.enqueue)
         self.del_button.clicked.connect(self.checker)
         self.search_button.clicked.connect(self.printFront)
@@ -133,7 +138,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Stack"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Queue"))
         self.ins_button.setText(_translate("MainWindow", "Enqueue"))
         self.del_button.setText(_translate("MainWindow", "Dequeue"))
         self.search_button.setText(_translate("MainWindow", "Front"))

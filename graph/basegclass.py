@@ -32,7 +32,7 @@ class GUI(QtWidgets.QMainWindow):
         self.form.connect_button.clicked.connect(self.connect_nodes)
 
         self.form.resetgraph_button.clicked.connect(self.reset)
-        self.form.pushButton.clicked.connect(self.DFS)
+
         self.form.pushButton_3.clicked.connect(self.remove_node)
         self.form.remove_edge.clicked.connect(self.disconnect_nodes)
 
@@ -108,60 +108,7 @@ class GUI(QtWidgets.QMainWindow):
             self.G.add_edge(node1, node2, weight=weight)
             self.form.plot_canvas.plot(self.G)
 
-    def BFS(self):
-        """Takes source and destination from user and runs the Dijkstra algorithm to calculate shortest path.
-        """
 
-        node = str(self.form.textEdit.toPlainText())
-
-        result = 'The BFS traversal is '
-        self.form.textEdit.clear()
-
-        visited = []  # List for visited nodes.
-        queue = []
-        if not node:
-            self.show_dialog("Empty argument.")
-            return
-
-        graph = nx.convert.to_dict_of_lists(self.G)
-
-        visited.append(node)
-        queue.append(node)
-        print(graph)
-        print(type(graph))
-
-        while queue:  # Creating loop to visit each node
-            m = queue.pop(0)
-
-            result = result + " - >" + m
-
-            for neighbour in graph[m]:
-                if neighbour not in visited:
-                    visited.append(neighbour)
-                    queue.append(neighbour)
-
-
-        self.form.result_text.setText(result)
-
-
-    def DFS(self):
-        start = self.form.textEdit.toPlainText()
-        self.form.textEdit.clear()
-        result = 'The DFS traversal is '
-        graph = nx.convert.to_dict_of_lists(self.G)
-
-        stack, path = [start], []
-
-        while stack:
-            vertex = stack.pop()
-            if vertex in path:
-                continue
-            path.append(vertex)
-            result = result + "->" + vertex
-            for neighbor in graph[vertex]:
-                stack.append(neighbor)
-        self.form.result_text.setText(result)
-        return path
 
 
 
@@ -216,147 +163,7 @@ class GUI(QtWidgets.QMainWindow):
             self.show_dialog(f"Edge: {node1, node2} doesn't exist.")
 
 
-    def floyd_warshall(self):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        res = [[key] + val for key, val in d_of_lists.items()]
 
-
-        A = nx.adjacency_matrix(self.G)
-        print(A)
-        print(type(A))
-        dist = list(map(lambda i: list(map(lambda j: j, i)), res))
-
-        V = self.G.number_of_nodes()
-        for k in range(V):
-
-            # pick all vertices as source one by one
-            for i in range(V):
-
-                # Pick all vertices as destination for the
-                # above picked source
-                for j in range(V):
-                    # If vertex k is on the shortest path from
-                    # i to j, then update the value of dist[i][j]
-                    dist[i][j] = min(dist[i][j],
-                                     dist[i][k] + dist[k][j]
-                                     )
-        result = self.printSolution(dist, V)
-        self.form.result_text.setText(result)
-
-    # A utility function to print the solution
-    def printSolution(self,distance, nV):
-        print("Following matrix shows the shortest distances\
-         between every pair of vertices")
-        string = "The output matrix : \n"
-        for i in range(nV):
-            for j in range(nV):
-
-                'Make changes here so that the string variable above is filled with the formatted data in the print'
-                if (distance[i][j] == 99999):
-                    print("%7s" % ("INF"), end=" ")
-
-                else:
-                    print("%7d\t" % (distance[i][j]), end=' ')
-                    if j == nV - 1:
-                        print()
-        return string
-
-    ''' Check if this vertex is an adjacent vertex
-            of the previously added vertex and is not
-            included in the path earlier '''
-
-    def hamil_handler(self):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        graph = [[key] + val for key, val in d_of_lists.items()]
-        print(graph)
-        n = self.G.number_of_nodes()
-        print(n)
-        self.findHamiltonianPaths(graph, n)
-
-
-
-    def hamiltonianPaths(self, graph, v, visited, path, n):
-
-        # if all the vertices are visited, then the Hamiltonian path exists
-        if len(path) == n:
-            # print the Hamiltonian path
-            print(path)
-            return
-
-        # Check if every edge starting from vertex `v` leads to a solution or not
-        for x in graph[v]:
-            w = int(x)
-            print(x)
-            # process only unvisited vertices as the Hamiltonian
-            # path visit each vertex exactly once
-            if not visited[w]:
-                visited[w] = True
-                path.append(w)
-
-                # check if adding vertex `w` to the path leads to the solution or not
-                self.hamiltonianPaths(graph, w, visited, path, n)
-
-                # backtrack
-                visited[w] = False
-                path.pop()
-
-    def findHamiltonianPaths(self, graph, n):
-
-        # start with every node
-        for start in range(n):
-            # add starting node to the path
-            path = [start]
-
-            # mark the start node as visited
-            visited = [False] * n
-
-            visited[start] = True
-            print(visited)
-            self.hamiltonianPaths(graph, start, visited, path, n)
-
-    def travellingSalesmanProblem(self, graph, src, V):
-
-        # store all vertex apart from source vertex
-        vertex = []
-        print(src, type(src))
-        s = int(src)
-        for i in range(V):
-            if i != s:
-                vertex.append(i)
-
-        # store minimum weight Hamiltonian Cycle
-        min_path = maxsize
-        next_permutation = permutations(vertex)
-        for i in next_permutation:
-
-            # store current Path weight(cost)
-            current_pathweight = 0
-
-            # compute current path weight
-            k = s
-            for j in i:
-                current_pathweight += graph[k][j]
-                k = j
-            current_pathweight += graph[k][s]
-
-            # update minimum
-            min_path = min(min_path, current_pathweight)
-
-        result = 'The path is ' + min_path
-        self.form.result_text.setText(result)
-        return min_path
-
-    def tsphandler(self):
-        d_of_lists = nx.convert.to_dict_of_lists(self.G)
-        graph = [[key] + val for key, val in d_of_lists.items()]
-        start = self.form.textEdit.toPlainText()
-
-        self.form.textEdit.clear()
-        print(graph)
-        n = self.G.number_of_nodes()
-
-        print(n)
-        self.travellingSalesmanProblem(graph, start, n)
 
     def nodeconnectivity(self):
         r = approximation.node_connectivity(self.G)

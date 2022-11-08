@@ -144,7 +144,7 @@ class Ui_Shortest(object):
 
     def retranslateUi(self, Dijsktra):
         _translate = QtCore.QCoreApplication.translate
-        Dijsktra.setWindowTitle(_translate("Dijsktra", "MainWindow"))
+        Dijsktra.setWindowTitle(_translate("Dijsktra", "Shortest Paths"))
         self.addnode_button.setText(_translate("Dijsktra", "Add Node"))
         self.newnode_text.setHtml(_translate("Dijsktra",
                                              "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
