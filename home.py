@@ -141,6 +141,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Home"))
+
         self.stack_menu.setText(_translate("MainWindow", "Stack"))
         self.queue_menu.setText(_translate("MainWindow", "Queue"))
         self.label.setText(_translate("MainWindow", "Lists"))

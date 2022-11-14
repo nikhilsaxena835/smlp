@@ -18,7 +18,7 @@ def main():
     icon = QtGui.QIcon()
     icon.addPixmap(QtGui.QPixmap('icon.png'))
     form.setWindowIcon(icon)
-
+    app.setStyleSheet("QLabel{font-size: 12pt;}")
     form.show()
     app.exec_()
 

@@ -7,7 +7,7 @@ from sort.gui_based_sorts.QuickSort import quick_sort
 from sort.gui_based_sorts.MergeSort import merge_sort
 from sort.gui_based_sorts.HeapSort import heap_sort
 from sort.gui_based_sorts.CocktailSort import cocktail_sort
-import random
+
 
 # build the window base
 
@@ -68,12 +68,14 @@ def generate():
 
     global data_list
 
-    try:
-        # pull the size from the user
-        size_value = int(size_entry.get())
+
+
+
+
+    """size_value = int(size_entry.get())"""
 
     # sets the default value to 30 as exception handling
-    except ValueError:
+    """except ValueError:
         size_value = 30
 
     # Set a limit on the sizes that could be used
@@ -84,9 +86,17 @@ def generate():
     data_list = [i for i in range(1, size_value + 1)]
 
     # makes the list random by shuffling the list
-    random.shuffle(data_list)
+    random.shuffle(data_list)"""
 
     # visualize the data set for the user to see
+    arr = size_entry.get()
+    data_list = arr.split(",")
+    count = int(0)
+    for i in data_list:
+        data_list[count] = int(data_list[count])
+        count = count + 1
+    # convert all array elements from string type to integer type
+
     draw_data(data_list, ["red" for x in range(len(data_list))])
 
 
@@ -169,7 +179,7 @@ Button(ui_frame, text="start", command=start_algorithm).grid(
 )
 
 # size input
-Label(ui_frame, text="Size: ").grid(
+Label(ui_frame, text="Enter array eg 5,7,2,8,2: ").grid(
     row=1, column=0, padx=5, pady=5, sticky="w"
 )
 size_entry = Entry(ui_frame)

@@ -297,11 +297,9 @@ class Ui_MainWindow(object):
     def traverse_out(self):
         button_id = self.buttonGroup.checkedId()
         print(button_id)
+        self.output_tf.setPlainText("")
         if button_id == 1:
-
             path = self.realtree.traversePreorder(self.root)
-            print(path)
-
             for key in path:
                 self.output_seq(key)
                 self.anim_traverse(key)
@@ -311,8 +309,6 @@ class Ui_MainWindow(object):
 
         if button_id == 2:
             path = self.realtree.traversePostorder(self.root)
-            print(path)
-
             for key in path:
                 self.output_seq(key)
                 self.anim_traverse(key)
@@ -322,7 +318,6 @@ class Ui_MainWindow(object):
 
         if button_id == 3:
             path = self.realtree.traverseInorder(self.root)
-            print(path)
 
             for key in path:
                 self.output_seq(key)
@@ -333,23 +328,60 @@ class Ui_MainWindow(object):
 
         if button_id == 4:
             path = self.realtree.levelOrderTraversal(self.root)
-            print(path)
-
             for key in path:
                 self.output_seq(key)
-                self.anim_traverse(key)
                 self.anim_traverse(key)
                 QApplication.processEvents()
                 time.sleep(1)
             path.clear()
 
     def anim_traverse(self, key):
-        pass
+        self.resketch(key, self.root)
 
     def output_seq(self, key):
         prev = self.output_tf.toPlainText()
         string = prev + str(key) + "->"
         self.output_tf.appendPlainText(string)
+
+    def resketch(self, mark, root, l=2, x=0, y=0):
+        if root.key == mark:
+            label = self.createLabel(str(root.key), "red")
+        else:
+            label = self.createLabel(str(root.key), "green")
+
+        point = self.scene.addWidget(label)
+        if l == 2:
+            print("I run once")
+            x = point.pos().x()
+            y = point.pos().y()
+            print(x,y)
+
+        if l == 1:
+            print("This is l")
+            print(x, y)
+            point.setPos(x - 40, y + 40)
+            self.scene.addLine(x, y, x - 40, y + 40)
+            print("Inserting", root.key)
+            x = point.pos().x()
+            y = point.pos().y()
+            print(x, y)
+
+        if l == 0:
+            print("This is r")
+            point.setPos(x + 40, y + 40)
+            self.scene.addLine(x, y, x + 40, y + 40)
+            print("Inserting", root.key)
+            x = point.pos().x()
+            y = point.pos().y()
+
+        if root.left:
+            print("This is lr")
+            self.resketch(mark, root.left, 1, x, y)
+
+        if root.right:
+            print("This is rr")
+            self.resketch(mark, root.right, 0, x, y)
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

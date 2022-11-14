@@ -42,9 +42,11 @@ class Ui_MainWindow(object):
         self.ins_atbeg = QtWidgets.QPushButton(self.centralwidget)
         self.ins_atbeg.setGeometry(QtCore.QRect(930, 70, 111, 31))
         self.ins_atbeg.setObjectName("ins_atbeg")
-        self.ins_atlast = QtWidgets.QPushButton(self.centralwidget)
-        self.ins_atlast.setGeometry(QtCore.QRect(930, 120, 75, 31))
-        self.ins_atlast.setObjectName("ins_atlast")
+
+        self.search_tf = QtWidgets.QPlainTextEdit(self.centralwidget)
+        self.search_tf.setGeometry(QtCore.QRect(820, 260, 71, 31))
+        self.search_tf.setObjectName("ins_tf")
+
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setGeometry(QtCore.QRect(800, 30, 281, 20))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -111,9 +113,7 @@ class Ui_MainWindow(object):
         self.search = QtWidgets.QPushButton(self.centralwidget)
         self.search.setGeometry(QtCore.QRect(930, 260, 75, 31))
         self.search.setObjectName("search")
-        self.ins_tf_2 = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.ins_tf_2.setGeometry(QtCore.QRect(820, 120, 71, 31))
-        self.ins_tf_2.setObjectName("ins_tf_2")
+
         self.ins_tf_3 = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.ins_tf_3.setGeometry(QtCore.QRect(820, 350, 71, 31))
         self.ins_tf_3.setObjectName("ins_tf_3")
@@ -154,7 +154,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.ins_atbeg.clicked.connect(self.insbeg)
-        self.ins_atlast.clicked.connect(self.inslast)
+
         self.ins_afterloc.clicked.connect(self.insatloc)
         self.del_frombeg.clicked.connect(self.delfrombeg)
         self.del_fromlast.clicked.connect(self.delfromlast)
@@ -174,9 +174,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Linked List"))
+        self.textEdit.setFontPointSize(14)
         self.ins_atbeg.setText(_translate("MainWindow", "Insert At Beginning"))
-        self.ins_atlast.setText(_translate("MainWindow", "Insert At Last"))
-
         self.operations_label.setText(_translate("MainWindow", "Operations"))
         self.info_label.setText(_translate("MainWindow", "Operation Info:"))
         self.back.setText(_translate("MainWindow", "Back"))
@@ -195,10 +194,6 @@ class Ui_MainWindow(object):
         self.cdll.setText(_translate("MainWindow", "Circular Doubly Linked List"))
 
     def show_dialog(self, message):
-        """Opening a new error window with a given error message.
-        Args:
-            message (string): error text.
-        """
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Critical)
         msg.setText("Information")
@@ -209,33 +204,48 @@ class Ui_MainWindow(object):
     def insbeg(self):
         node = self.ins_tf.toPlainText()
         self.ins_tf.setPlainText("")
-        self.llist.append(int(node))
+        self.llist.insert(0,int(node))
+        self.textEdit.setText("")
+        self.textEdit.setText("\n\n For Linked Lists the insertion time complexity at the beginning is O(1) because "
+                              "we always have a reference for HEAD")
         self.sketch()
 
-    def inslast(self):
-        node = self.ins_tf.toPlainText()
-        self.ins_tf.setPlainText("")
-        self.llist.append(int(node))
-        self.sketch()
+
 
     def insatloc(self):
-        node = self.ins_tf3.toPlainText()
+        node = self.ins_tf_3.toPlainText()
         pos = self.ins_tf_4.toPlainText()
-        self.ins_tf.setPlainText("")
+        self.ins_tf_3.setPlainText("")
+        self.ins_tf_4.setPlainText("")
         self.llist.insert(int(pos)+1, int(node))
+        self.textEdit.setText("")
+        self.textEdit.setText("\n\n For Linked Lists the insertion time complexity at some location is O(N) because "
+                              "we have to find traverse the list from the HEAD")
         self.sketch()
 
     def delfrombeg(self):
         del self.llist[0]
+        self.textEdit.setText("")
+        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(1) because "
+                              "we always have a reference for HEAD")
         self.sketch()
 
     def delfromlast(self):
         self.llist.pop()
+        self.textEdit.setText("")
+        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
+                              "we need to traverse the entire LIST except for circular lists where we have a pointer"
+                              "for the last node as well")
         self.sketch()
 
     def delatloc(self):
-        node = self.ins_tf3.toPlainText()
-        self.ins_tf.setPlainText("")
+        node = self.ins_tf_3.toPlainText()
+
+        self.ins_tf_3.setPlainText("")
+        self.ins_tf_4.setPlainText("")
+        self.textEdit.setText("")
+        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
+                              "we need to traverse the LIST")
         self.llist.remove(int(node))
         self.sketch()
 
@@ -261,7 +271,7 @@ class Ui_MainWindow(object):
         self.scene.clear()
         painter = QtGui.QPainter()
         defx = 100
-        defy = 470
+        defy = 270
         head = QtWidgets.QLabel("Head")
         head.setStyleSheet("border: 3px solid blue; border-radius: 10px;background-color: rgb(37, 255, 37)")
         self.scene.addWidget(head)
@@ -293,8 +303,9 @@ class Ui_MainWindow(object):
                 dest = point.pos()
                 self.DrawLineWithArrow(painter, start, dest)
                 prev = point
-                if (len(self.llist) > 1):
-                    self.DrawLineWithArrow(painter, prev.pos, head.pos)
+                listlength = len(self.llist)
+                if ( listlength > 1) and i == self.llist[listlength-1]:
+                    self.DrawLineWithArrow(painter, prev.pos(), head.pos())
 
             if self.mode == 4:
                 point = self.scene.addWidget(label)
@@ -304,8 +315,9 @@ class Ui_MainWindow(object):
                 self.DrawLineWithArrow(painter, start, dest)
                 self.DrawLineWithArrow(painter, dest, start)
                 prev = point
-                if (len(self.llist) > 1):
-                    self.DrawLineWithArrow(painter, prev.pos, head.pos)
+                listlength = len(self.llist)
+                if (listlength > 1) and i == self.llist[listlength-1]:
+                    self.DrawLineWithArrow(painter, prev.pos(), head.pos())
 
 
 
@@ -334,7 +346,12 @@ class Ui_MainWindow(object):
 
 
     def searchop(self):
-        pass
+        self.textEdit.setText("")
+        inp = int(self.search_tf.toPlainText())
+        if inp in self.llist:
+            string = "The element is found at: " + str(self.llist.index(inp)) + "\n\n For Linked Lists the " \
+                                                                                "search time complexity is O(N)"
+            self.textEdit.setText(string)
 
 
 def main():

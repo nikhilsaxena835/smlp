@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 import sys
-from datetime import time
+import time
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication, QGraphicsTextItem
@@ -149,32 +149,36 @@ class Ui_MainWindow(object):
         for i in range(0, len(arr)):
             print("RAN")
             label = self.getLabel(arr[i], False)
-            self.scene.addItem(label)
+            label = self.scene.addWidget(label)
             pos_point = QtCore.QPoint(forward, 160)
             label.setPos(pos_point)
             forward = forward + 70
 
     def getLabel(self, i, flag):
         if flag is False:
-            label = QGraphicsTextItem(str(i))
-            label.setHtml("<div style='background:#00ff00;'>" + str(i) + "</div>");
+            label = QtWidgets.QLabel(str(i))
+            label.setStyleSheet("border: 3px solid blue; border-radius: 10px; background-color: lightblue")
         elif flag == 3:
-            label = QGraphicsTextItem(str(i))
-            label.setHtml("<div style='background:#0000ff;'>" + str(i) + "</div>");
+            label = QtWidgets.QLabel(str(i))
+            label.setStyleSheet("border: 3px solid blue; border-radius: 10px; background-color: red")
         else:
-            label = QGraphicsTextItem(str(i))
-            label.setHtml("<div style='background:#ff0000;'>" + str(i) + "</div>");
-
+            label = QtWidgets.QLabel(str(i))
+            label.setStyleSheet("border: 3px solid blue; border-radius: 10px; background-color: green")
+        label.setGeometry(QtCore.QRect(190, 280, 41, 31))
         return label
 
     def linear_resketch(self, arr, toFind):
         self.scene.clear()
         count = -1
-        forward = 100
+
         for j in range(0, len(arr)):
+            self.scene.clear()
             count = count + 1
+            forward = 100
             QApplication.processEvents()
+            time.sleep(1)
             for i in range(0, len(arr)):
+                print("Draw")
                 if i == toFind:
                     label = self.getLabel(arr[i], True)
                     self.ind = arr.index(i)
@@ -185,13 +189,12 @@ class Ui_MainWindow(object):
                     label = self.getLabel(arr[i], 3)
                 else:
                     label = self.getLabel(arr[i], False)
-                self.scene.addItem(label)
+                label = self.scene.addWidget(label)
                 pos_point = QtCore.QPoint(forward, 160)
                 label.setPos(pos_point)
                 forward = forward + 70
             if self.ind != -1:
                 break
-
 
     def binary_resketch(self, arr, toFind):
         print("binary search")
@@ -202,6 +205,7 @@ class Ui_MainWindow(object):
         hi = len(arr) - 1
         for j in range(0, len(arr)):
             QApplication.processEvents()
+            time.sleep(1)
             count = count + 1
             mid = int((hi+lo)/2)
             if arr[mid] < toFind:
@@ -228,12 +232,12 @@ class Ui_MainWindow(object):
                 else:
                     label = self.getLabel(arr[i], False)
 
-                self.scene.addItem(label)
+                label = self.scene.addWidget(label)
                 pos_point = QtCore.QPoint(forward, 160)
                 label.setPos(pos_point)
                 forward = forward + 70
-            if i != -1:
-                break
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ui = QtWidgets.QMainWindow()

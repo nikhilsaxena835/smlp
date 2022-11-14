@@ -83,7 +83,7 @@ class Ui_Basic(object):
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
-        self.label_11.setGeometry(QtCore.QRect(600, 560, 71, 20))
+        self.label_11.setGeometry(QtCore.QRect(600, 560, 91, 20))
         self.label_11.setObjectName("label_11")
         self.textEdit_3 = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit_3.setGeometry(QtCore.QRect(410, 580, 461, 91))
@@ -157,6 +157,7 @@ class Ui_Basic(object):
         self.plot_canvas.setGeometry(QtCore.QRect(20, 20, 891, 431))
         self.plot_canvas.setObjectName("plot_canvas")
 
+        self.textEdit_3.setFontPointSize(12)
 
 
         self.retranslateUi(Basic)

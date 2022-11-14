@@ -59,7 +59,7 @@ class Ui_Shortest(object):
         self.label_9.setGeometry(QtCore.QRect(690, 520, 47, 13))
         self.label_9.setObjectName("label_9")
         self.label_10 = QtWidgets.QLabel(self.centralwidget)
-        self.label_10.setGeometry(QtCore.QRect(690, 590, 71, 16))
+        self.label_10.setGeometry(QtCore.QRect(690, 590, 91, 16))
         self.label_10.setObjectName("label_10")
         self.newnode_text = QtWidgets.QTextEdit(self.centralwidget)
         self.newnode_text.setGeometry(QtCore.QRect(1107, 100, 71, 41))
@@ -135,7 +135,7 @@ class Ui_Shortest(object):
         self.plot_canvas.setGeometry(QtCore.QRect(20, 30, 891, 431))
         self.plot_canvas.setObjectName("plot_canvas")
 
-
+        self.textEdit_3.setFontPointSize(12)
 
         self.retranslateUi(Dijsktra)
         QtCore.QMetaObject.connectSlotsByName(Dijsktra)

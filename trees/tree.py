@@ -10,12 +10,11 @@ class Node:
 class Tree:
     parent = None
     path = []
+
+
+
     def createNode(self, data):
         return Node(data)
-
-
-    def insert(self, root , data):
-        node = root
 
     def insert(self, node, data):
         """
@@ -35,6 +34,7 @@ class Tree:
                 node.right = self.insert(node.right, data)
         return node
 
+
     def search(self, node, data):
         if node is None or node.data == data:
             return node
@@ -44,44 +44,82 @@ class Tree:
             return self.search(node.left, data)
 
 
+    def delete_Node(self, root, key):
+        parent = None
+        curr = root
+        while curr and curr.data != key:
 
+            # update the parent to the current node
+            parent = curr
 
-    def deleteNode(root, data):
+            # if the given key is less than the current node, go to the left subtree;
+            # otherwise, go to the right subtree
+            if key < curr.data:
+                curr = curr.left
+            else:
+                curr = curr.right
 
-        if root is None:
+        # return if the key is not found in the tree
+        if curr is None:
             return root
 
-        if data < root.data:
-            root.left = Tree.deleteNode(root.left, data)
+        # Case 1: node to be deleted has no children, i.e., it is a leaf node
+        if curr.left is None and curr.right is None:
 
-        elif (data > root.data):
-            root.right = Tree.deleteNode(root.right, data)
+            # if the node to be deleted is not a root node, then set its
+            # parent left/right child to None
+            if curr != root:
+                if parent.left == curr:
+                    parent.left = None
+                else:
+                    parent.right = None
 
+            # if the tree has only a root node, set it to None
+            else:
+                root = None
+
+        # Case 2: node to be deleted has two children
+        elif curr.left and curr.right:
+
+            # find its inorder successor node
+            successor = self.minValueNode(curr)
+
+            # store successor value
+            val = successor.data
+
+            # recursively delete the successor. Note that the successor
+            # will have at most one child (right child)
+            self.delete_Node(root, successor.data)
+
+            # copy value of the successor to the current node
+            curr.data = val
+
+        # Case 3: node to be deleted has only one child
         else:
 
-            if root.left is None:
-                temp = root.right
-                root = None
-                return temp
+            # choose a child node
+            if curr.left:
+                child = curr.left
+            else:
+                child = curr.right
 
-            elif root.right is None:
-                temp = root.left
-                root = None
-                return temp
+            # if the node to be deleted is not a root node, set its parent
+            # to its child
+            if curr != root:
+                if curr == parent.left:
+                    parent.left = child
+                else:
+                    parent.right = child
 
-            temp = Tree.minValueNode(root.right)
-            root.key = temp.data
-            root.right = Tree.deleteNode(root.right, temp.data)
-
+            # if the node to be deleted is a root node, then set the root to the child
+            else:
+                root = child
         return root
 
-    def minValueNode(node):
-        current = node
-        # loop down to find the leftmost leaf
-        while (current.left is not None):
-            current = current.left
-
-        return current
+    def minValueNode(self, curr):
+        while curr.left:
+            curr = curr.left
+        return curr
 
     def traverseInorder(self, root):
         if root is not None:
@@ -140,7 +178,9 @@ class Tree:
         # Return answer list
         return ans
 
-def main():
+
+
+"""def main():
     root = None
     tree = Tree()
     root = tree.insert(root, 1)
@@ -159,10 +199,10 @@ def main():
     tree.traversePreorder(root)
 
     print("Traverse Postorder")
-    tree.traversePostorder(root)
+    tree.traversePostorder(root)"""
 
 
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     main()
-
+"""
 

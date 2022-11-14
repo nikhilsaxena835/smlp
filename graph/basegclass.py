@@ -171,20 +171,18 @@ class GUI(QtWidgets.QMainWindow):
         s = "The node connectivity is : " + str(r)
         self.form.textEdit_3.setText(s)
 
-    def tsphandler2(self):
-        l = approximation.traveling_salesman_problem(self.G)
-        print(l)
 
     def complement(self):
         self.G = networkx.algorithms.operators.complement(self.G)
         self.form.plot_canvas.plot(self.G)
 
     def planarity(self):
-        ans = nx.is_planar(self.G)
+        ans, dump = nx.check_planarity(self.G, False)
         s = "The graph is "
         if ans is True:
             s = s + "Planar"
         else:
+
             s = s + "Not Planar"
         self.form.textEdit_3.setText(s)
 
@@ -196,7 +194,7 @@ class GUI(QtWidgets.QMainWindow):
         ans = networkx.algorithms.approximation.min_weighted_vertex_cover(self.G)
         x = ""
         for i in ans:
-            x = x + ", " + i
+            x = x + " " + i
         s = "The vertex cover set is : " + x
         self.form.textEdit_3.setText(s)
 
@@ -205,7 +203,7 @@ class GUI(QtWidgets.QMainWindow):
         self.form.textEdit_3.setText(str(ans))
 
     def ind_set(self):
-        ans = networkx.algorithms.approximation.maximum_independent_set
+        ans = networkx.algorithms.approximation.maximum_independent_set(self.G)
         self.form.textEdit_3.setText(str(ans))
 
     def maxclique(self):

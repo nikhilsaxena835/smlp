@@ -12,7 +12,7 @@ class TreeNode(object):
 
 
 class AVLTree(object):
-
+    path = []
     # Function to insert a node
     def insert_node(self, root, key):
 
@@ -165,39 +165,38 @@ class AVLTree(object):
         return broot
 
     def traverseInorder(self, root):
-        path = []
+
         if root is not None:
             self.traverseInorder(root.left)
-            path.append(root.key)
+            self.path.append(root.key)
             self.traverseInorder(root.right)
-        return path
+        return self.path
 
     def traversePreorder(self, root):
-        path = []
+
         if root is not None:
-            path.append(root.key)
+            self.path.append(root.key)
             self.traversePreorder(root.left)
             self.traversePreorder(root.right)
-        return path
+        return self.path
 
     def traversePostorder(self, root):
-        path = []
+
+        print("POST")
         if root is not None:
             self.traversePostorder(root.left)
             self.traversePostorder(root.right)
-            path.append(root.key)
-        return path
+            self.path.append(root.key)
+            print(self.path)
+        return self.path
 
     def levelOrderTraversal(self, root):
-        ans = []
-
-        # Return Null if the tree is empty
         if root is None:
-            return ans
+            return self.path
 
         # Initialize queue
         queue = collections.deque()
-        queue.append(root.key)
+        queue.append(root)
 
         # Iterate over the queue until it's empty
         while queue:
@@ -208,7 +207,7 @@ class AVLTree(object):
             while currSize > 0:
                 # Dequeue element
                 currNode = queue.popleft()
-                currList.append(currNode.val)
+                currList.append(currNode.key)
                 currSize -= 1
 
                 # Check for left child
@@ -219,18 +218,7 @@ class AVLTree(object):
                     queue.append(currNode.right)
 
             # Append the currList to answer after each iteration
-            ans.append(currList)
+            self.path.append(currList)
 
         # Return answer list
-        return ans
-
-"""myTree = AVLTree()
-root = None
-nums = [10,20,30]
-for num in nums:
-    root = myTree.insert_node(root, num)
-myTree.printHelper(root, "", True)
-key = 13
-#root = myTree.delete_node(root, key)
-print("After Deletion: ")
-myTree.printHelper(root, "", True)"""
+        return self.path

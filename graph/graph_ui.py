@@ -124,7 +124,7 @@ class Ui_Dijsktra(object):
         self.statusbar.setObjectName("statusbar")
         Dijsktra.setStatusBar(self.statusbar)
 
-
+        self.result_text.setFontPointSize(12)
 
         self.error_dialog = QtWidgets.QErrorMessage()
 

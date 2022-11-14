@@ -98,9 +98,6 @@ class GUI(QtWidgets.QMainWindow):
             self.form.plot_canvas.plot(self.G)
 
     def BFS(self):
-        """Takes source and destination from user and runs the Dijkstra algorithm to calculate shortest path.
-        """
-
         node = str(self.form.src.toPlainText())
 
         result = 'The BFS traversal is '
@@ -141,6 +138,9 @@ class GUI(QtWidgets.QMainWindow):
 
         stack, path = [start], []
 
+        if not start:
+            self.show_dialog("Empty argument.")
+            return
         while stack:
             vertex = stack.pop()
             if vertex in path:

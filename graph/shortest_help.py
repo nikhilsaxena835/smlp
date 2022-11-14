@@ -39,9 +39,9 @@ class GUI(QtWidgets.QMainWindow):
 
 
         self.form.pushButton.clicked.connect(self.dijkstra)
-        self.form.pushButton_2.clicked.connect(self.bellford)
+        self.form.pushButton_2.clicked.connect(self.floyd)
 
-        self.form.pushButton_4.clicked.connect(self.floyd)
+        self.form.pushButton_4.clicked.connect(self.bellford)
 
 
 
@@ -168,7 +168,7 @@ class GUI(QtWidgets.QMainWindow):
     def bellford(self):
         node1 = str(self.form.src.toPlainText())
         node2 = str(self.form.dest.toPlainText())
-        ans = networkx.bellman_ford_path(self.G, node1, node2)
+        ans = networkx.algorithms.shortest_paths.single_source_bellman_ford(self.G, node1, node2)
         self.form.textEdit_3.setText(str(ans))
 
 

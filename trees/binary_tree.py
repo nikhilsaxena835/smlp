@@ -5,8 +5,6 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QGraphicsScene, QApplication
 from trees import tree
 
-# solve insert issue for insertion of 1-11-4-7
-# exception handling for insertion and deletion when no input is given in the text field.
 '''
 node_map stores the labels in a key value pair. nodes is a list of nodes that is ordered. This helps to recreate the binary tree everytime sketch is called.
 line_map stores the lines in a key value pair. During deletion we also want to remove lines. This dictionary helps there
@@ -18,6 +16,8 @@ class Ui_MainWindow(object):
     node_map = {}
     nodes = []
     line_map = {}
+    realtree = tree.Tree()
+    root = None
     def setupUi(self, MainWindow):
         '''
         Nodes are drawn on the QGraphicsScene which is contained in the QGraphicsView container.
@@ -164,7 +164,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Binary Tree"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Binary Search Tree"))
         self.ins_button.setText(_translate("MainWindow", "Insert Node"))
         self.del_button.setText(_translate("MainWindow", "Delete Node"))
         self.search_button.setText(_translate("MainWindow", "Search Node"))
@@ -179,12 +179,11 @@ class Ui_MainWindow(object):
         self.post.setText(_translate("MainWindow", "Post-order Traversal"))
         self.inorder.setText(_translate("MainWindow", "Inorder Traversal"))
 
-
     def insert_clicked(self):
         inp = self.ins_tf.toPlainText()
         inp = int(inp)
         self.ins_tf.setPlainText("")
-        global realtree, root
+
         self.nodes.append(inp)
 
         self.textEdit.setText("Inserting a value in the correct position is similar to searching because we try to "
@@ -195,22 +194,19 @@ class Ui_MainWindow(object):
 
         if(self.first == 0):
             self.first = self.first+1
-            realtree = tree.Tree()
-            root = realtree.createNode(inp)
+            #self.realtree = tree.Tree()
+            self.root = self.realtree.createNode(inp)
             self.sketch()
         else:
-            root = realtree.insert(root, inp)
+            self.root = self.realtree.insert(self.root, inp)
             self.sketch()
-
-
 
     def del_clicked(self):
         inp = self.del_tf.toPlainText()
         inp = int(inp)
         self.del_tf.setPlainText("")
-        label = self.node_map[inp]
-        label.deleteLater()
-        tree.Tree.deleteNode(root, inp)
+
+        self.root = self.realtree.delete_Node(self.root, inp)
         print("nodes before ", self.nodes)
         self.nodes.remove(inp)
         print("nodes after ", self.nodes)
@@ -219,8 +215,7 @@ class Ui_MainWindow(object):
                               "situations occur -The node to be deleted is the leaf node, or, "
                               "The node to be deleted has only one child, and, "
                               "The node to be deleted has two children")
-        line = self.line_map[inp]
-        self.scene.removeItem(line)
+
         self.sketch()
 
     def sketch(self, mark=None, color=0):
@@ -243,37 +238,38 @@ class Ui_MainWindow(object):
                 firsts = 1
             else:
                 parent = self.getParent(key)
+                print(parent)
                 parentlabel = self.node_map[parent]
                 x = parentlabel.x()
                 y = parentlabel.y()
-                print("x, y, ", key,parent)
+
                 point = self.scene.addWidget(label)
                 self.node_map[key] = point
                 if (parent > key):
                     point.setPos(x - 40, y + 50)
-                    print("inserting left child")
-
                 else:
                     point.setPos(x + 40, y + 50)
-                    print("inserting right child")
 
                 self.addLinetoNodes(x, y, point, key)
 
     def getParent(self, target):
-        parent, node = None, root
+        parent, node = None, self.root
         while True:
+            print(target, node.data)
             if node is None:
+                print("Node is none no parent")
                 return None
 
             if node.data == target:
+                print("Node found")
                 return parent.data
 
             if target < node.data:
+                print("Key less than node.data")
                 parent, node = node, node.left
             else:
+                print("Key more than node.data")
                 parent, node = node, node.right
-
-
 
     def addLinetoNodes(self,x1, y1, point, key):
         x2 = point.x()
@@ -323,11 +319,9 @@ class Ui_MainWindow(object):
     def traverse_out(self):
         button_id = self.buttonGroup.checkedId()
         print(button_id)
+        self.output_tf.setPlainText("")
         if button_id == 1:
-
-            path = realtree.traversePreorder(root)
-            print(path)
-
+            path = self.realtree.traversePreorder(self.root)
             for key in path:
                 self.output_seq(key)
                 self.anim_traverse(key)
@@ -336,9 +330,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 2:
-            path = realtree.traversePostorder(root)
-            print(path)
-
+            path = self.realtree.traversePostorder(self.root)
             for key in path:
                 self.output_seq(key)
                 self.anim_traverse(key)
@@ -347,9 +339,7 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 3:
-            path = realtree.traverseInorder(root)
-            print(path)
-
+            path = self.realtree.traverseInorder(self.root)
             for key in path:
                 self.output_seq(key)
                 self.anim_traverse(key)
@@ -358,12 +348,9 @@ class Ui_MainWindow(object):
             path.clear()
 
         if button_id == 4:
-            path = realtree.levelOrderTraversal(root)
-            print(path)
-
+            path = self.realtree.levelOrderTraversal(self.root)
             for key in path:
                 self.output_seq(key)
-                self.anim_traverse(key)
                 self.anim_traverse(key)
                 QApplication.processEvents()
                 time.sleep(1)
@@ -371,8 +358,7 @@ class Ui_MainWindow(object):
 
 
     def anim_traverse(self, key):
-        self.sketch(key, color = 1)
-
+        self.sketch(key, color=1)
 
     def output_seq(self, key):
         prev = self.output_tf.toPlainText()
@@ -390,7 +376,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-'''
-
-'''
