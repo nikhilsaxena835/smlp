@@ -3,8 +3,6 @@ from PyQt5.QtWidgets import QApplication
 import sys
 import home
 
-
-
 class ExampleApp(QtWidgets.QMainWindow, home.Ui_MainWindow):
 
     def __init__(self, parent=None):

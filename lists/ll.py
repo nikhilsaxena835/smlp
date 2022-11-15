@@ -222,32 +222,34 @@ class Ui_MainWindow(object):
         self.textEdit.setText("\n\n For Linked Lists the insertion time complexity at some location is O(N) because "
                               "we have to find traverse the list from the HEAD")
         self.sketch()
+    try:
+        def delfrombeg(self):
+            del self.llist[0]
+            self.textEdit.setText("")
+            self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(1) because "
+                                  "we always have a reference for HEAD")
+            self.sketch()
 
-    def delfrombeg(self):
-        del self.llist[0]
-        self.textEdit.setText("")
-        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(1) because "
-                              "we always have a reference for HEAD")
-        self.sketch()
+        def delfromlast(self):
+            self.llist.pop()
+            self.textEdit.setText("")
+            self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
+                                  "we need to traverse the entire LIST except for circular lists where we have a pointer"
+                                  "for the last node as well")
+            self.sketch()
 
-    def delfromlast(self):
-        self.llist.pop()
-        self.textEdit.setText("")
-        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
-                              "we need to traverse the entire LIST except for circular lists where we have a pointer"
-                              "for the last node as well")
-        self.sketch()
+        def delatloc(self):
+            node = self.ins_tf_3.toPlainText()
 
-    def delatloc(self):
-        node = self.ins_tf_3.toPlainText()
-
-        self.ins_tf_3.setPlainText("")
-        self.ins_tf_4.setPlainText("")
-        self.textEdit.setText("")
-        self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
-                              "we need to traverse the LIST")
-        self.llist.remove(int(node))
-        self.sketch()
+            self.ins_tf_3.setPlainText("")
+            self.ins_tf_4.setPlainText("")
+            self.textEdit.setText("")
+            self.textEdit.setText("\n\n For Linked Lists the deletion time complexity at the beginning is O(N) because "
+                                  "we need to traverse the LIST")
+            self.llist.remove(int(node))
+            self.sketch()
+    except IndexError as e:
+        print("Exception on delete")
 
     def setmode(self):
         button_id = self.buttonGroup.checkedId()
@@ -258,14 +260,11 @@ class Ui_MainWindow(object):
         if button_id == 2:
             self.mode = 2
 
-
         if button_id == 3:
             self.mode = 3
 
         if button_id == 4:
             self.mode = 4
-
-
 
     def sketch(self):
         self.scene.clear()
@@ -276,7 +275,7 @@ class Ui_MainWindow(object):
         head.setStyleSheet("border: 3px solid blue; border-radius: 10px;background-color: rgb(37, 255, 37)")
         self.scene.addWidget(head)
         prev = head
-        next = None
+
         for i in self.llist:
             label = QtWidgets.QLabel(str(i))
             if self.mode == 1:
@@ -318,8 +317,6 @@ class Ui_MainWindow(object):
                 listlength = len(self.llist)
                 if (listlength > 1) and i == self.llist[listlength-1]:
                     self.DrawLineWithArrow(painter, prev.pos(), head.pos())
-
-
 
             point = self.scene.addWidget(label)
             point.setPos(defx, defy)

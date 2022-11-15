@@ -179,44 +179,59 @@ class Ui_MainWindow(object):
         self.post.setText(_translate("MainWindow", "Post-order Traversal"))
         self.inorder.setText(_translate("MainWindow", "Inorder Traversal"))
 
-    def insert_clicked(self):
-        inp = self.ins_tf.toPlainText()
-        inp = int(inp)
-        self.ins_tf.setPlainText("")
+    def show_dialog(self, message):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("Error")
+        msg.setInformativeText(message)
+        msg.setWindowTitle("Error")
+        msg.exec_()
 
-        self.nodes.append(inp)
+    try:
+        def insert_clicked(self):
+            inp = self.ins_tf.toPlainText()
+            inp = int(inp)
+            self.ins_tf.setPlainText("")
 
-        self.textEdit.setText("Inserting a value in the correct position is similar to searching because we try to "
-                              "maintain the rule that the left subtree is lesser than root and the right subtree is "
-                              "larger than root.We keep going to either right subtree or left subtree depending on "
-                              "the value and when we reach a point left or right subtree is null, "
-                              "we put the new node there.")
+            self.nodes.append(inp)
 
-        if(self.first == 0):
-            self.first = self.first+1
-            #self.realtree = tree.Tree()
-            self.root = self.realtree.createNode(inp)
+            self.textEdit.setText("Inserting a value in the correct position is similar to searching because we try to "
+                                  "maintain the rule that the left subtree is lesser than root and the right subtree is "
+                                  "larger than root.We keep going to either right subtree or left subtree depending on "
+                                  "the value and when we reach a point left or right subtree is null, "
+                                  "we put the new node there.")
+
+            if(self.first == 0):
+                self.first = self.first+1
+
+                self.root = self.realtree.createNode(inp)
+                self.sketch()
+            else:
+                self.root = self.realtree.insert(self.root, inp)
+                self.sketch()
+    except AttributeError as ae1:
+        print("AE")
+        show_dialog("Operation disallowed: Possible Cause: Repeated Keys")
+
+    try:
+        def del_clicked(self):
+            inp = self.del_tf.toPlainText()
+            inp = int(inp)
+            self.del_tf.setPlainText("")
+
+            self.root = self.realtree.delete_Node(self.root, inp)
+            print("nodes before ", self.nodes)
+            self.nodes.remove(inp)
+            print("nodes after ", self.nodes)
+            self.textEdit.setText("In a binary search tree, we must delete a node from the tree by keeping in mind that the "
+                                  "property of BST is not violated. To delete a node from BST, there are three possible "
+                                  "situations occur -The node to be deleted is the leaf node, or, "
+                                  "The node to be deleted has only one child, and, "
+                                  "The node to be deleted has two children")
+
             self.sketch()
-        else:
-            self.root = self.realtree.insert(self.root, inp)
-            self.sketch()
-
-    def del_clicked(self):
-        inp = self.del_tf.toPlainText()
-        inp = int(inp)
-        self.del_tf.setPlainText("")
-
-        self.root = self.realtree.delete_Node(self.root, inp)
-        print("nodes before ", self.nodes)
-        self.nodes.remove(inp)
-        print("nodes after ", self.nodes)
-        self.textEdit.setText("In a binary search tree, we must delete a node from the tree by keeping in mind that the "
-                              "property of BST is not violated. To delete a node from BST, there are three possible "
-                              "situations occur -The node to be deleted is the leaf node, or, "
-                              "The node to be deleted has only one child, and, "
-                              "The node to be deleted has two children")
-
-        self.sketch()
+    except Exception as e:
+        show_dialog("Operation involves root deletion, kindly create a new tree.")
 
     def sketch(self, mark=None, color=0):
         firsts = 0
@@ -251,25 +266,27 @@ class Ui_MainWindow(object):
                     point.setPos(x + 40, y + 50)
 
                 self.addLinetoNodes(x, y, point, key)
+    try:
+        def getParent(self, target):
+            parent, node = None, self.root
+            while True:
+                print(target, node.data)
+                if node is None:
+                    print("Node is none no parent")
+                    return None
 
-    def getParent(self, target):
-        parent, node = None, self.root
-        while True:
-            print(target, node.data)
-            if node is None:
-                print("Node is none no parent")
-                return None
+                if node.data == target:
+                    print("Node found")
+                    return parent.data
 
-            if node.data == target:
-                print("Node found")
-                return parent.data
-
-            if target < node.data:
-                print("Key less than node.data")
-                parent, node = node, node.left
-            else:
-                print("Key more than node.data")
-                parent, node = node, node.right
+                if target < node.data:
+                    print("Key less than node.data")
+                    parent, node = node, node.left
+                else:
+                    print("Key more than node.data")
+                    parent, node = node, node.right
+    except AttributeError as ae:
+        show_dialog("Tree structure violated: Duplicate Key or Root Modification.")
 
     def addLinetoNodes(self,x1, y1, point, key):
         x2 = point.x()

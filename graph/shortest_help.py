@@ -36,7 +36,7 @@ class GUI(QtWidgets.QMainWindow):
 
         self.form.pushButton_3.clicked.connect(self.remove_node)
         self.form.remove_edge.clicked.connect(self.disconnect_nodes)
-
+        self.form.pushButton_2.setEnabled(False)
 
         self.form.pushButton.clicked.connect(self.dijkstra)
         self.form.pushButton_2.clicked.connect(self.floyd)
@@ -46,10 +46,6 @@ class GUI(QtWidgets.QMainWindow):
 
 
     def show_dialog(self, message):
-        """Opening a new error window with a given error message.
-        Args:
-            message (string): error text.
-        """
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Critical)
         msg.setText("Error")
@@ -158,25 +154,27 @@ class GUI(QtWidgets.QMainWindow):
 
 
 
+    try:
+        def dijkstra(self):
+            node1 = str(self.form.src.toPlainText())
+            node2 = str(self.form.dest.toPlainText())
+            ans = networkx.algorithms.shortest_paths.dijkstra_path(self.G, node1, node2)
+            self.form.textEdit_3.setText(str(ans))
 
-    def dijkstra(self):
-        node1 = str(self.form.src.toPlainText())
-        node2 = str(self.form.dest.toPlainText())
-        ans = networkx.algorithms.shortest_paths.dijkstra_path(self.G, node1, node2)
-        self.form.textEdit_3.setText(str(ans))
+        def bellford(self):
+            node1 = str(self.form.src.toPlainText())
+            node2 = str(self.form.dest.toPlainText())
+            ans = networkx.algorithms.shortest_paths.single_source_bellman_ford(self.G, node1, node2)
+            self.form.textEdit_3.setText(str(ans))
 
-    def bellford(self):
-        node1 = str(self.form.src.toPlainText())
-        node2 = str(self.form.dest.toPlainText())
-        ans = networkx.algorithms.shortest_paths.single_source_bellman_ford(self.G, node1, node2)
-        self.form.textEdit_3.setText(str(ans))
+        def floyd(self):
 
+            ans = networkx.algorithms.shortest_paths.floyd_warshall(self.G)
+            print(ans)
+            self.form.textEdit_3.setText(str(ans))
 
-    def floyd(self):
-
-        ans = networkx.algorithms.shortest_paths.floyd_warshall(self.G)
-        print(ans)
-        self.form.textEdit_3.setText(str(ans))
+    except ValueError as ve:
+        show_dialog("Disconnected Graph or Negative Edge weights are not allowed (for now)")
 
 """mainloop = QtWidgets.QApplication([])
 run_app = GUI()

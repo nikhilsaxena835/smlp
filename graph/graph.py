@@ -52,9 +52,6 @@ class GUI(QtWidgets.QMainWindow):
         msg.exec_()
 
     def add_new_node(self):
-        """ Adding a new node to the Graph.
-        """
-
         new_node = str(self.form.newnode_text.toPlainText())
         if not new_node:
             self.form.newnode_text.clear()
@@ -71,8 +68,6 @@ class GUI(QtWidgets.QMainWindow):
             self.form.plot_canvas.plot(self.G)
 
     def connect_nodes(self):
-        """Connects two nodes with a given weight.
-        """
         node1 = str(self.form.node1_text.toPlainText())
         node2 = str(self.form.node2_text.toPlainText())
         weight = str(self.form.weight_text.toPlainText())
@@ -155,8 +150,6 @@ class GUI(QtWidgets.QMainWindow):
 
 
     def reset(self):
-        """Resets the existing graph.
-        """
         self.G = nx.Graph()
         self.form.plot_canvas.plot(self.G)
 
@@ -172,14 +165,10 @@ class GUI(QtWidgets.QMainWindow):
         if self.G.has_node(new_node):
             self.G.remove_node(new_node)
             self.form.plot_canvas.plot(self.G)
-
-
         else:
             self.show_dialog(f"{new_node} is doeesn't exist.")
 
     def disconnect_nodes(self):
-        """Connects two nodes with a given weight.
-                """
         node1 = str(self.form.node1_text.toPlainText())
         node2 = str(self.form.node2_text.toPlainText())
         weight = str(self.form.weight_text.toPlainText())
